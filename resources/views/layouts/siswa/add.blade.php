@@ -148,7 +148,7 @@
                             </div>
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="sumber_biaya_kuliah">Sumber Biaya Kuliah</label>
+                                    <label for="sumber_biaya_kuliah">Sumber Biaya Sekolah</label>
                                     <fieldset class="form-group">
                                         <select class="form-select" id="sumber_biaya_sekolah"
                                             name="sumber_biaya_sekolah">
