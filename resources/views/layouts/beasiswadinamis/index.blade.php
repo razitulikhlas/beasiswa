@@ -12,7 +12,9 @@
     @if (session()->has('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-
+    <div class="col col-lg-1 offset-lg-11">
+        <a href="/databeasiswa" class="">Back</a>
+    </div>
     <div class="col-12 row">
         <div class="col-3">
             <div class="card">
@@ -21,11 +23,11 @@
                 </div>
 
                 <div class="card-content">
-
                     <div class="card-body">
-                        <form class="form" action="/data" method="post">
+                        <form class="form" action="/databeasiswa" method="post">
                             @csrf
                             <div class="row">
+                                <input type="text" name="id_beasiswa" value="{{ $id_beasiswa }}" hidden readonly>
                                 <div class="col-md-12 col-12">
                                     <div class="form-group">
                                         <label for="prodi">Nama mahasiswa</label>
@@ -110,11 +112,7 @@
                                                 </td>
                                             @endforeach
                                             <td>
-                                                <button id="edit" type="button" data-id={{ $item['id'] }}
-                                                    data-prodi="{{ $item['prodi'] }}"
-                                                    data-kd_prodi={{ $item['kode_prodi'] }}
-                                                    data-id_jurusan={{ $item['id_jurusan'] }}
-                                                    data-tingkat={{ $item['tingkat'] }} class="btn btn-info rounded-pill"
+                                                <button id="edit" type="button" class="btn btn-info rounded-pill"
                                                     data-bs-toggle="modal" data-bs-target="#update">Edit</button>
                                                 <button type="button" class="btn btn-danger rounded-pill"
                                                     data-bs-toggle="modal" data-id-prodi={{ $item['id'] }}
@@ -249,7 +247,7 @@
     <script>
         $(function() {
             $(document).on('click', '#delete', function() {
-                $('#formDelete').attr('action', '/data/' + $(this).data('id-prodi'))
+                $('#formDelete').attr('action', '/databeasiswa/' + $(this).data('id-prodi'))
             })
 
             $(document).on('click', '#edit', function() {

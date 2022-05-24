@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Beasiswa;
 use App\Models\Kriteria;
 use Illuminate\Http\Request;
 
@@ -18,8 +19,13 @@ class KriteriaController extends Controller
         $data = Kriteria::all();
         $bobot_available = Kriteria::sum('bobot');
         $bobot_available = 100 - $bobot_available;
+        $categoryBeasiswa =Beasiswa::all();
 
-        return view('layouts.kriteria.index',['data'=>$data,'bobot_available'=>$bobot_available]);
+        return view('layouts.kriteria.index',[
+            'data'=>$data,
+            'bobot_available'=>$bobot_available,
+            'categoryBeasiswa'=>$categoryBeasiswa
+        ]);
     }
 
     /**
@@ -40,19 +46,20 @@ class KriteriaController extends Controller
      */
     public function store(Request $request)
     {
-       $bobot_available = Kriteria::sum('bobot');
+       $bobot_available = Kriteria::whereIdBeasiswa($request['id_beasiswa'])->sum('bobot');
        $bobot_available = 100 - $bobot_available;
        $data = $request->only([
            'nama_kriteria',
            'type',
-           'bobot'
+           'bobot',
+           'id_beasiswa'
        ]);
 
        if($bobot_available < $request->bobot){
-           return redirect('kriteria')->with('errorbobot','Nilai  bobot yang anda masukan tidak boleh lebih besar dari yang tersedia');
+           return redirect('kategoribeasiswa/'.$data['id_beasiswa'])->with('errorbobot','Nilai  bobot yang anda masukan tidak boleh lebih besar dari yang tersedia');
        }else{
            Kriteria::create($data);
-           return redirect('kriteria')->with('success','Sukses menambahkan data kriteria');
+           return redirect('kategoribeasiswa/'.$data['id_beasiswa'])->with('success','Sukses menambahkan data kriteria');
        }
     }
 
@@ -62,9 +69,9 @@ class KriteriaController extends Controller
      * @param  \App\Models\Kriteria  $kriteria
      * @return \Illuminate\Http\Response
      */
-    public function show(Kriteria $kriteria)
+    public function show($id)
     {
-        //
+       
     }
 
     /**
@@ -121,6 +128,6 @@ class KriteriaController extends Controller
     {
 
         Kriteria::destroy($id);
-        return redirect('kriteria')->with('success','Data kriteria berhasil dihapus');
+        return redirect('kategoribeasiswa')->with('success','Data kriteria berhasil dihapus');
     }
 }

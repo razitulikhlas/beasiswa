@@ -6,7 +6,7 @@
         </a>
     </header>
     <div class="page-heading">
-        <h3>Kriteria Beasiswa </h3>
+        <h3>Kriteria {{ $title }}</h3>
     </div>
 
     @if (session()->has('success'))
@@ -16,6 +16,9 @@
         <div class="alert alert-danger">{{ session('errorbobot') }}</div>
     @endif
 
+    <div class="col col-lg-1 offset-lg-11">
+        <a href="/kategoribeasiswa" class="">Back</a>
+    </div>
     <div class="col-12 row">
         <div class="col-3">
             <div class="card">
@@ -45,6 +48,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-12">
+                                    <input type="text" id="id_beasiswa"
+                                            class="form-control" name="id_beasiswa" value="{{ $id_beasiswa }}" readonly hidden>
+                                    
+                                </div>
+                                <div class="col-md-12 col-12">
                                     <div class="form-group">
                                         <label for="type">Type Kriteria*</label>
                                         <fieldset class="form-group">
@@ -67,8 +75,6 @@
                                         <small class="text-muted">bobot yang tersedia {{ $bobot_available }}</small>
                                     </div>
                                 </div>
-
-
                                 <div class="col-12 d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
                                     <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
@@ -228,6 +234,15 @@
             $(document).on('click', '#delete', function() {
                 $('#formDelete').attr('action', '/kriteria/' + $(this).data('id-kriteria'))
             })
+            // $('#useRange').hide();
+            // $('#checkRange').click(function(){
+                
+            //     if($(this).is(':checked')){
+            //         $('#useRange').show();
+            //     } else {
+            //         $('#useRange').hide();
+            //     }
+            // });
 
             $(document).on('click', '#edit', function() {
                 const id = $(this).data('id');

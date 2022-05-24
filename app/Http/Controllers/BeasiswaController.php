@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Beasiswa;
-use App\Models\BeasiswaDinamis;
+use App\Models\DataBeasiswa;
 use App\Models\Kriteria;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
@@ -21,12 +21,16 @@ class BeasiswaController extends Controller
 
         $data = Kriteria::all();
         $siswa = Siswa::all();
-        $datasiswa = BeasiswaDinamis::all();
+        $datasiswa = DataBeasiswa::all();
+        $categoryBeasiswa = Beasiswa::all();
+
+        
+
+       
+
 
         return view('layouts.databeasiswa.index', [
-            'data' => $data,
-            'siswa' => $siswa,
-            'datasiswa' => $datasiswa
+            'data' => $categoryBeasiswa
         ]);
     }
 
@@ -59,7 +63,7 @@ class BeasiswaController extends Controller
             'id_mahasiswa' => $request['id_mahasiswa'],
             'data' => json_encode($kriteriaData)
         ];
-        BeasiswaDinamis::create($data);
+        DataBeasiswa::create($data);
         return redirect('data')->with('success', 'Data beasiswa berhasil di tambahkan');
     }
 
@@ -94,12 +98,7 @@ class BeasiswaController extends Controller
      */
     public function update(Request $request, Beasiswa $beasiswa)
     {
-        $data = $request->only([
-            'title',
-            'desc'
-        ]);
-        Beasiswa::whereId($beasiswa->id)->update($data);
-        return redirect('beasiswa')->with('success', 'Data beasiswa berhasil di ubah');
+        
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Beasiswa;
+use App\Models\Kriteria;
 use Illuminate\Http\Request;
 
 class CategoryBeasiswaController extends Controller
@@ -16,7 +17,7 @@ class CategoryBeasiswaController extends Controller
     {
         //
         $data = Beasiswa::all();
-        return view('layouts.beasiswa.index',['data'=>$data]);
+        return view('layouts.kategorybeasiswa.index',['data'=>$data]);
     }
 
     /**
@@ -43,7 +44,7 @@ class CategoryBeasiswaController extends Controller
             'desc'
         ]);
         Beasiswa::create($data);
-        return redirect('beasiswa')->with('success','Data beasiswa berhasil di tambahkan');
+        return redirect('kategoribeasiswa')->with('success','Data beasiswa berhasil di tambahkan');
     }
 
     /**
@@ -52,9 +53,19 @@ class CategoryBeasiswaController extends Controller
      * @param  \App\Models\Beasiswa  $beasiswa
      * @return \Illuminate\Http\Response
      */
-    public function show(Beasiswa $beasiswa)
+    public function show($id)
     {
-        //
+        $data = Kriteria::whereIdBeasiswa($id)->get();
+        $bobot_available = Kriteria::whereIdBeasiswa($id)->sum('bobot');
+        $kategory = Beasiswa::whereId($id)->first();
+        $bobot_available = 100 - $bobot_available;
+
+        return view('layouts.kriteria.index',[
+            'data'=>$data,
+            'bobot_available'=>$bobot_available,
+            'id_beasiswa'=>$id,
+            'title'=>$kategory->title
+        ]);
     }
 
     /**
@@ -75,14 +86,15 @@ class CategoryBeasiswaController extends Controller
      * @param  \App\Models\Beasiswa  $beasiswa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Beasiswa $beasiswa)
+    public function update(Request $request, $id)
     {
+        
          $data = $request->only([
             'title',
             'desc'
         ]);
-        Beasiswa::whereId($beasiswa->id)->update($data);
-        return redirect('beasiswa')->with('success','Data beasiswa berhasil di ubah');
+        Beasiswa::whereId($id)->update($data);
+        return redirect('kategoribeasiswa')->with('success','Data beasiswa berhasil di ubah');
     }
 
     /**
@@ -91,10 +103,10 @@ class CategoryBeasiswaController extends Controller
      * @param  \App\Models\Beasiswa  $beasiswa
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Beasiswa $beasiswa)
+    public function destroy($id)
     {
         //
-        Beasiswa::destroy($beasiswa->id);
-        return redirect('beasiswa')->with('success','Data beasiswa berhasil di hapus');
+        Beasiswa::destroy($id);
+        return redirect('kategoribeasiswa')->with('success','Data beasiswa berhasil di hapus');
     }
 }

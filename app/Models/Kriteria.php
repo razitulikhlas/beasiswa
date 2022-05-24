@@ -19,7 +19,7 @@ class Kriteria extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'nama_kriteria','type','bobot'
+        'id_beasiswa','nama_kriteria','type','bobot'
     ];
 
 
