@@ -23,7 +23,7 @@ class BeasiswaController extends Controller
         $siswa = Siswa::all();
         $datasiswa = BeasiswaDinamis::all();
 
-        return view('layouts.beasiswadinamis.index', [
+        return view('layouts.databeasiswa.index', [
             'data' => $data,
             'siswa' => $siswa,
             'datasiswa' => $datasiswa
