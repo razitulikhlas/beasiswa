@@ -1,0 +1,24 @@
+.profile-user-img {
+    border: 3px solid #adb5bd;
+    margin: 0 auto;
+    padding: 3px;
+    width: 100px;
+    height: 100px;
+    margin-top: 20px;
+}
+
+.myprofile {
+    height: 150px;
+    width: 150px;
+    scale: inherit;
+    margin: 30px;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
