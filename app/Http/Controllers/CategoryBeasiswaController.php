@@ -16,7 +16,7 @@ class CategoryBeasiswaController extends Controller
     {
         //
         $data = Beasiswa::all();
-        return view('layouts.beasiswa.index',['data'=>$data]);
+        return view('layouts.beasiswa.index', ['data' => $data]);
     }
 
     /**
@@ -38,12 +38,18 @@ class CategoryBeasiswaController extends Controller
     public function store(Request $request)
     {
         //
-        $data = $request->only([
-            'title',
-            'desc'
+        $validateData = $request->validate([
+            'title' => 'required',
+            'desc' => 'required',
+            'icon' => 'image|file|max:1024'
         ]);
-        Beasiswa::create($data);
-        return redirect('beasiswa')->with('success','Data beasiswa berhasil di tambahkan');
+        if ($request->file('icon')) {
+            $validateData['icon'] = $request->file('icon')->store('images');
+        } else {
+            $validateData['icon'] = 'images/avatar.jpg';
+        }
+        Beasiswa::create($validateData);
+        return redirect('beasiswa')->with('success', 'Data beasiswa berhasil di tambahkan');
     }
 
     /**
@@ -77,12 +83,12 @@ class CategoryBeasiswaController extends Controller
      */
     public function update(Request $request, Beasiswa $beasiswa)
     {
-         $data = $request->only([
+        $data = $request->only([
             'title',
             'desc'
         ]);
         Beasiswa::whereId($beasiswa->id)->update($data);
-        return redirect('beasiswa')->with('success','Data beasiswa berhasil di ubah');
+        return redirect('beasiswa')->with('success', 'Data beasiswa berhasil di ubah');
     }
 
     /**
@@ -95,6 +101,6 @@ class CategoryBeasiswaController extends Controller
     {
         //
         Beasiswa::destroy($beasiswa->id);
-        return redirect('beasiswa')->with('success','Data beasiswa berhasil di hapus');
+        return redirect('beasiswa')->with('success', 'Data beasiswa berhasil di hapus');
     }
 }

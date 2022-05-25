@@ -23,7 +23,7 @@
                 <div class="card-content">
 
                     <div class="card-body">
-                        <form class="form" action="/beasiswa" method="post">
+                        <form class="form" action="/beasiswa" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-12 col-12">
@@ -39,6 +39,19 @@
                                     <div class="form-group">
                                         <label for="desc">Deskripsi</label>
                                         <textarea class="form-control" name="desc" id="desc" rows="3" spellcheck="false">{{ old('desc') }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-12">
+                                    <div class="form-group">
+                                        <img class="img-preview img-fluid mb-3 col-sm-5">
+                                        <label for="icon">Upload Icon</label>
+                                        <input class="form-control  @error('icon') is-invalid @enderror" type="file"
+                                            id="icon" name="icon" onchange="previewImage()">
+                                        @error('icon')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-12 d-flex justify-content-end">
@@ -201,5 +214,19 @@
                 $('#formEdit').attr('action', '/beasiswa/' + id);
             })
         });
+
+        function previewImage() {
+            const image = document.querySelector('#icon');
+            const previewImage = document.querySelector('.img-preview');
+
+            previewImage.style.display = 'block';
+
+            const offReader = new FileReader();
+            offReader.readAsDataURL(image.files[0]);
+
+            offReader.onload = function(oFREvent) {
+                previewImage.src = oFREvent.target.result;
+            }
+        }
     </script>
 @endsection

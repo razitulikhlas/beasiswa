@@ -22,12 +22,17 @@ class BeasiswaController extends Controller
         $data = Kriteria::all();
         $siswa = Siswa::all();
         $datasiswa = BeasiswaDinamis::all();
+        $listBeasiswa = Beasiswa::all();
 
-        return view('layouts.beasiswadinamis.index', [
-            'data' => $data,
-            'siswa' => $siswa,
-            'datasiswa' => $datasiswa
+        return view('layouts.beasiswadinamis.list', [
+            'data' => $listBeasiswa,
         ]);
+
+        // return view('layouts.beasiswadinamis.list', [
+        //     'data' => $data,
+        //     'siswa' => $siswa,
+        //     'datasiswa' => $datasiswa
+        // ]);
     }
 
     /**
