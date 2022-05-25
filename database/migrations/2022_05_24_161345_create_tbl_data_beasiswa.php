@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTblDinamis extends Migration
+class CreateTblDataBeasiswa extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateTblDinamis extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_dinamis', function (Blueprint $table) {
+        Schema::create('tbl_data_beasiswa', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('id_mahasiswa');
+            $table->bigInteger('id_beasiswa');
             $table->json('data');
             $table->timestamps();
         });
@@ -28,6 +29,6 @@ class CreateTblDinamis extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_dinamis');
+        Schema::dropIfExists('tbl_data_beasiswa');
     }
 }

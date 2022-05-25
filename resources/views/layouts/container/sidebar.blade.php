@@ -3,8 +3,8 @@
          <div class="sidebar-header">
              <div class="d-flex justify-content-between">
                  <div class="logo text-center">
-                     <a href="index.html"><img src="{{ asset('mazer/dist/assets/images/logo/logopnp.png') }}"
-                             style="width:50px;height:50px;" alt="Logo" srcset=""></a>
+                     <a href="index.html"><img src="{{ asset('mazer/dist/assets/images/logo/logo.png') }}"
+                              alt="Logo" srcset=""></a>
                      <p>Razitul Ikhlas</p>
                  </div>
                  <div class="toggler">
@@ -28,31 +28,21 @@
                      </a>
                  </li>
                  <li class="sidebar-item  ">
-                     <a href="/data" class='sidebar-link'>
-                         <span>Data Beasiswa</span>
+                     <a href="/databeasiswa" class='sidebar-link'>
+                         <span>Input Data Beasiswa</span>
                      </a>
                  </li>
+                 <li class="sidebar-item  ">
+                    <a href="/kategoribeasiswa" class='sidebar-link'>
+                        <span>Kategori Beasiswa</span>
+                    </a>
+                </li>
+
                  <li class="sidebar-item  ">
                      <a href="/jurusan" class='sidebar-link'>
                          <span>Jurusan</span>
                      </a>
                  </li>
-                 <li class="sidebar-item  ">
-                     <a href="/prodi" class='sidebar-link'>
-                         <span>Prodi</span>
-                     </a>
-                 </li>
-                 <li class="sidebar-item  ">
-                     <a href="/kriteria" class='sidebar-link'>
-                         <span>Kriteria</span>
-                     </a>
-                 </li>
-                 <li class="sidebar-item  ">
-                     <a href="/beasiswa" class='sidebar-link'>
-                         <span>Beasiswa</span>
-                     </a>
-                 </li>
-
 
                  <li class="sidebar-item  has-sub">
                      <a href="#" class='sidebar-link'>

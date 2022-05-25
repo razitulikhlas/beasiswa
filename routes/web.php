@@ -3,6 +3,7 @@
 use App\Http\Controllers\BeasiswaController;
 use App\Http\Controllers\CategoryBeasiswaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DataBeasiswaController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KriteriaController;
 use Illuminate\Support\Facades\Route;
@@ -28,8 +29,8 @@ Route::resource('/siswa', SiswaController::class);
 Route::resource('/jurusan', JurusanController::class);
 Route::resource('/prodi', ProdiController::class);
 Route::resource('/kriteria', KriteriaController::class);
-Route::resource('/beasiswa', CategoryBeasiswaController::class);
-Route::resource('/data', BeasiswaController::class);
+Route::resource('/kategoribeasiswa', CategoryBeasiswaController::class);
+Route::resource('/databeasiswa', DataBeasiswaController::class);
 Route::resource('/semester', SemesterController::class);
 
 Route::get('/', function () {

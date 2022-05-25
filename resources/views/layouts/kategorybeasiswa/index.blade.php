@@ -23,7 +23,11 @@
                 <div class="card-content">
 
                     <div class="card-body">
+<<<<<<< HEAD:resources/views/layouts/beasiswa/index.blade.php
                         <form class="form" action="/beasiswa" method="post" enctype="multipart/form-data">
+=======
+                        <form class="form" action="/kategoribeasiswa" method="post">
+>>>>>>> c3b59ed22541c4298a24374448e036469074ed41:resources/views/layouts/kategorybeasiswa/index.blade.php
                             @csrf
                             <div class="row">
                                 <div class="col-md-12 col-12">
@@ -90,6 +94,7 @@
                                             <td>{{ $item['title'] }}</td>
                                             <td>{{ $item['desc'] }}</td>
                                             <td>
+                                                <a href="/kategoribeasiswa/{{ $item['id'] }}" class="btn btn-success rounded-pill">Kriteria</a>
                                                 <button id="edit" type="button" data-id={{ $item['id'] }}
                                                     data-title="{{ $item['title'] }}" data-desc={{ $item['desc'] }}
                                                     class="btn btn-info rounded-pill" data-bs-toggle="modal"
@@ -146,7 +151,7 @@
                         <i class="bx bx-x d-block d-sm-none"></i>
                         <span class="d-none d-sm-block">Close</span>
                     </button>
-                    <form action="/beasiswa" method="post" class="d-inline" id="formDelete">
+                    <form action="/kategoribeasiswa" method="post" class="d-inline" id="formDelete">
                         @method('delete')
                         @csrf
                         <button class="btn btn-primary ml-1">
@@ -168,7 +173,7 @@
                     <h4 class="modal-title" id="exampleModalLabel">Update data</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form" action="/beasiswa" method="post" id="formEdit">
+                    <form class="form" action="/kategoribeasiswa" method="post" id="formEdit">
                         @method('put')
                         @csrf
                         <div class="row">
@@ -201,7 +206,7 @@
     <script>
         $(function() {
             $(document).on('click', '#delete', function() {
-                $('#formDelete').attr('action', '/beasiswa/' + $(this).data('id-beasiswa'))
+                $('#formDelete').attr('action', '/kategoribeasiswa/' + $(this).data('id-beasiswa'))
             })
 
             $(document).on('click', '#edit', function() {
@@ -211,7 +216,7 @@
 
                 $("#Utitle").val(title);
                 $("#Udesc").val(desc);
-                $('#formEdit').attr('action', '/beasiswa/' + id);
+                $('#formEdit').attr('action', '/kategoribeasiswa/' + id);
             })
         });
 

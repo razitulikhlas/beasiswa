@@ -25,7 +25,11 @@ class Sidebar {
     let sidebarItems = document.querySelectorAll('.sidebar-item.has-sub');
     for(var i = 0; i < sidebarItems.length; i++) {
         let sidebarItem = sidebarItems[i];
+<<<<<<< HEAD
       sidebarItems[i].querySelector('.sidebar-link').addEventListener('click', (e) => {
+=======
+      sidebarItems[i].querySelector('.sidebar-link').addEventListener('click', function(e) {
+>>>>>>> c3b59ed22541c4298a24374448e036469074ed41
             e.preventDefault();
             
             let submenu = sidebarItem.querySelector('.submenu');
@@ -33,7 +37,11 @@ class Sidebar {
 
             if( submenu.style.display == "none" ) submenu.classList.add('active')
             else submenu.classList.remove('active')
+<<<<<<< HEAD
             slideToggle(submenu, 300, () => this.forceElementVisibility(sidebarItem))
+=======
+            slideToggle(submenu, 300)
+>>>>>>> c3b59ed22541c4298a24374448e036469074ed41
         })
     }
 
@@ -46,7 +54,11 @@ class Sidebar {
     }
 
     // Scroll into active sidebar
+<<<<<<< HEAD
     setTimeout(() => document.querySelector('.sidebar-item.active')?.scrollIntoView(false), 100);
+=======
+    setTimeout(() => document.querySelector('.sidebar-item.active').scrollIntoView(false), 100);
+>>>>>>> c3b59ed22541c4298a24374448e036469074ed41
 
     // check responsive
     this.onFirstLoad();
@@ -142,6 +154,7 @@ class Sidebar {
       body.style.overflowY = active ? 'auto' : 'hidden';
     }
   }
+<<<<<<< HEAD
 
   isElementInViewport(el) {
     var rect = el.getBoundingClientRect();
@@ -160,6 +173,8 @@ class Sidebar {
       el.scrollIntoView(false);
     }
   }
+=======
+>>>>>>> c3b59ed22541c4298a24374448e036469074ed41
 }
 
 /**

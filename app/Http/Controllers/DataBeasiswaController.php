@@ -8,7 +8,7 @@ use App\Models\Kriteria;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 
-class BeasiswaController extends Controller
+class DataBeasiswaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,27 +17,10 @@ class BeasiswaController extends Controller
      */
     public function index()
     {
-        //
-
-        $data = Kriteria::all();
-        $siswa = Siswa::all();
-        $datasiswa = DataBeasiswa::all();
         $categoryBeasiswa = Beasiswa::all();
-
-
-
-
-
-
         return view('layouts.databeasiswa.index', [
             'data' => $categoryBeasiswa
         ]);
-
-        // return view('layouts.beasiswadinamis.list', [
-        //     'data' => $data,
-        //     'siswa' => $siswa,
-        //     'datasiswa' => $datasiswa
-        // ]);
     }
 
     /**
@@ -59,7 +42,7 @@ class BeasiswaController extends Controller
     public function store(Request $request)
     {
         // return $request['Penghasilan_orang_tua'];
-        $kriteria = Kriteria::all()->toArray();
+        $kriteria = Kriteria::whereIdBeasiswa($request['id_beasiswa'])->get()->toArray();
         $kriteriaData = array();
 
         foreach ($kriteria as $item) {
@@ -67,10 +50,11 @@ class BeasiswaController extends Controller
         }
         $data = [
             'id_mahasiswa' => $request['id_mahasiswa'],
+            'id_beasiswa' => $request['id_beasiswa'],
             'data' => json_encode($kriteriaData)
         ];
         DataBeasiswa::create($data);
-        return redirect('data')->with('success', 'Data beasiswa berhasil di tambahkan');
+        return redirect('databeasiswa/'.$request['id_beasiswa'])->with('success', 'Data beasiswa berhasil di tambahkan');
     }
 
     /**
@@ -79,9 +63,18 @@ class BeasiswaController extends Controller
      * @param  \App\Models\Beasiswa  $beasiswa
      * @return \Illuminate\Http\Response
      */
-    public function show(Beasiswa $beasiswa)
+    public function show($id)
     {
-        //
+        $data = Kriteria::whereIdBeasiswa($id)->get();
+        $siswa = Siswa::all();
+        $datasiswa = DataBeasiswa::whereIdBeasiswa($id)->get();
+         return view('layouts.beasiswadinamis.index', [
+            'data' => $data,
+            'siswa' => $siswa,
+            'datasiswa' => $datasiswa,
+            'id_beasiswa'=>$id
+        ]);
+        return $id;
     }
 
     /**
@@ -104,7 +97,12 @@ class BeasiswaController extends Controller
      */
     public function update(Request $request, Beasiswa $beasiswa)
     {
-
+        $data = $request->only([
+            'title',
+            'desc'
+        ]);
+        Beasiswa::whereId($beasiswa->id)->update($data);
+        return redirect('beasiswa')->with('success', 'Data beasiswa berhasil di ubah');
     }
 
     /**
@@ -113,10 +111,10 @@ class BeasiswaController extends Controller
      * @param  \App\Models\Beasiswa  $beasiswa
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Beasiswa $beasiswa)
+    public function destroy($id)
     {
         //
-        Beasiswa::destroy($beasiswa->id);
-        return redirect('beasiswa')->with('success', 'Data beasiswa berhasil di hapus');
+        DataBeasiswa::destroy($id);
+        return redirect('databeasiswa')->with('success', 'Data beasiswa berhasil di hapus');
     }
 }

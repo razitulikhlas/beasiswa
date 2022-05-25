@@ -15,6 +15,7 @@ class CreateTblKriteria extends Migration
     {
         Schema::create('tbl_kriteria', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('id_beasiswa');
             $table->string("nama_kriteria");
             $table->string("type");
             $table->integer("bobot");
