@@ -20,7 +20,7 @@ class Beasiswa extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'title','desc','icon'
+        'title','desc'
     ];
 
 

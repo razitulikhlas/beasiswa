@@ -20,13 +20,13 @@ class DataBeasiswa extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'id_mahasiswa',
+        'id_siswa',
         'id_beasiswa',
         'data'
     ];
 
         public function mahasiswa(){
-        return $this->hasOne(Siswa::class,'id','id_mahasiswa');
+        return $this->hasOne(Siswa::class,'id','id_siswa');
     }
 
 

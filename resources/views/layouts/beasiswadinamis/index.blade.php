@@ -32,7 +32,7 @@
                                     <div class="form-group">
                                         <label for="prodi">Nama mahasiswa</label>
                                         <fieldset class="form-group">
-                                            <select class="form-select" id="name" name="id_mahasiswa">
+                                            <select class="form-select" id="name" name="id_siswa">
                                                 @foreach ($siswa as $item)
                                                     @if (old('id') == $item['id'])
                                                         <option value="{{ $item['id'] }}" selected>
@@ -46,17 +46,18 @@
                                         </fieldset>
                                     </div>
                                 </div>
-                                @foreach ($data as $item)
+
+                                @foreach ($datakey as $item)
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
-                                            <label for="prodi">{{ $item['nama_kriteria'] }}</label>
-                                            <input type="text" id="{{ str_replace(' ', '_', $item['nama_kriteria']) }}"
+                                            <label for="prodi">{{ $item }}</label>
+                                            <input type="text" id="{{ str_replace(' ', '_', $item) }}"
                                                 class="form-control @error('prodi') is-invalid @enderror"
-                                                placeholder="{{ $item['nama_kriteria'] }}"
-                                                name="{{ str_replace(' ', '_', $item['nama_kriteria']) }}" required
+                                                placeholder="{{ $item }}"
+                                                name="{{ str_replace(' ', '_', $item) }}" required
                                                 oninvalid="this.setCustomValidity('data prodi tidak boleh kosong')"
                                                 oninput="setCustomValidity('')"
-                                                value="{{ old(str_replace(' ', '_', $item['nama_kriteria'])) }}">
+                                                value="{{ old(str_replace(' ', '_', $item)) }}">
                                             @error('prodi')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -90,29 +91,28 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama</th>
-                                        @foreach ($data as $value)
-                                            <th>{{ $value['nama_kriteria'] }}</th>
+                                        @foreach ($datakey as $value)
+                                            <th>{{ $value }}</th>
                                         @endforeach
                                         <th>ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {{-- {{ var_dump($datasiswa) }} --}}
                                     @foreach ($datasiswa as $key => $item)
                                         <tr>
                                             <td class="text-bold-500">{{ $loop->iteration }}</td>
-                                            <td class="text-bold-500">{{ $item->mahasiswa->nama }}</td>
-                                            <?php
-                                            $r = preg_replace('/[0-9\@\.\;\" "\:\{}]+/', '', $datasiswa[0]->data);
-                                            $array = explode(',', $r);
-                                            $data = json_decode($datasiswa[0]->data, true);
-                                            ?>
-                                            @foreach ($array as $key => $value)
+                                            <td class="text-bold-500">{{ $item['name'] }}</td>
+                                            {{-- {{ var_dump($datakey) }} --}}
+                                            @foreach ($datakey as $value)
                                                 <td class="text-bold-500">
-                                                    {{ $data[$value] }}
+                                                    {{ $item[$value] }}
                                                 </td>
                                             @endforeach
                                             <td>
                                                 <button id="edit" type="button" class="btn btn-info rounded-pill"
+                                                    data-id="{{ $item['id'] }}" data-id_siswa={{ $item['id_siswa'] }}
+                                                    @foreach ($datakey as $value) data-{{ $value }}="{{ $item[$value] }}" @endforeach
                                                     data-bs-toggle="modal" data-bs-target="#update">Edit</button>
                                                 <button type="button" class="btn btn-danger rounded-pill"
                                                     data-bs-toggle="modal" data-id-prodi={{ $item['id'] }}
@@ -165,7 +165,7 @@
         </div>
     </div>
 
-    {{-- <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
@@ -178,43 +178,18 @@
                         @method('put')
                         @csrf
                         <div class="row">
+                            <input type="text" name="id_beasiswa" value="{{ $id_beasiswa }}" hidden readonly>
                             <div class="col-md-12 col-12">
                                 <div class="form-group">
-                                    <label for="prodi">Nama Prodi*</label>
-                                    <input type="text" id="Uprodi" class="form-control @error('prodi') is-invalid @enderror"
-                                        placeholder="Nama prodi" name="prodi" required
-                                        oninvalid="this.setCustomValidity('data prodi tidak boleh kosong')"
-                                        oninput="setCustomValidity('')" value="{{ old('prodi') }}">
-                                    @error('prodi')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-12">
-                                <div class="form-group">
-                                    <label for="prodi">Tingkatan</label>
+                                    <label for="prodi">Nama mahasiswa</label>
                                     <fieldset class="form-group">
-                                        <select class="form-select" id="Utingkat" name="tingkat">
-                                            <option value="D3">D3</option>
-                                            <option value="D4">D4</option>
-                                            <option value="S2">S2</option>
-                                        </select>
-                                    </fieldset>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-12">
-                                <div class="form-group">
-                                    <label for="prodi">Jurusan*</label>
-                                    <fieldset class="form-group">
-                                        <select class="form-select" id="Uid_jurusan" name="id_jurusan">
-                                            @foreach ($jurusan as $item)
-                                                @if (old('id_jurusan') == $item['id'])
+                                        <select class="form-select" id="uid_siswa" name="uid_siswa">
+                                            @foreach ($siswa as $item)
+                                                @if (old('id') == $item['id'])
                                                     <option value="{{ $item['id'] }}" selected>
-                                                        {{ $item['jurusan'] }}</option>
+                                                        {{ $item['nama'] }}</option>
                                                 @else
-                                                    <option value="{{ $item['id'] }}">{{ $item['jurusan'] }}
+                                                    <option value="{{ $item['id'] }}">{{ $item['nama'] }}
                                                     </option>
                                                 @endif
                                             @endforeach
@@ -222,27 +197,37 @@
                                     </fieldset>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-12">
-                                <div class="form-group">
-                                    <label for="kode_prodi">Kode Prodi</label>
-                                    <input type="text" id="Ukode_prodi" class="form-control" readonly
-                                        placeholder="Kode prodi" name="kode_prodi" required
-                                        oninvalid="this.setCustomValidity('data tempat lahir tidak boleh kosong')"
-                                        oninput="setCustomValidity('')" value="{{ old('kode_prodi', $kode_prodi) }}">
+                            @foreach ($datakey as $item)
+                                <div class="col-md-12 col-12">
+                                    <div class="form-group">
+                                        <label for="prodi">{{ $item }}</label>
+                                        <input type="text" id="u{{ str_replace(' ', '_', $item) }}"
+                                            class="form-control @error('prodi') is-invalid @enderror"
+                                            placeholder="{{ $item }}" name="u{{ str_replace(' ', '_', $item) }}"
+                                            required oninvalid="this.setCustomValidity('data prodi tidak boleh kosong')"
+                                            oninput="setCustomValidity('')"
+                                            value="{{ old(str_replace(' ', '_', $item)) }}">
+                                        @error('prodi')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-
-
+                            @endforeach
                             <div class="col-12 d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                    <i class="bx bx-x d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block">Close</span>
+                                </button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 
     <script>
         $(function() {
@@ -252,16 +237,14 @@
 
             $(document).on('click', '#edit', function() {
                 const id = $(this).data('id');
-                const id_jurusan = $(this).data('id_jurusan');
-                const prodi = $(this).data('prodi');
-                const kd_prodi = $(this).data('kd_prodi');
-                const tingkat = $(this).data('tingkat');
+                const id_siswa = $(this).data('id_siswa');
+                $('#uid_siswa').val(id_siswa);
+                @foreach ($datakey as $item)
+                    const {{ $item }} = $(this).data('{{ $item }}');
+                    $("#u{{ $item }}").val({{ $item }});
+                @endforeach
 
-                $("#Uprodi").val(prodi);
-                $("#Ukode_prodi").val(kd_prodi);
-                $('#Uid_jurusan').val(id_jurusan);
-                $('#Utingkat').val(tingkat);
-                $('#formEdit').attr('action', '/prodi/' + id);
+                $('#formEdit').attr('action', '/databeasiswa/' + id);
             })
         });
     </script>

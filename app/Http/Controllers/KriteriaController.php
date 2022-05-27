@@ -71,7 +71,7 @@ class KriteriaController extends Controller
      */
     public function show($id)
     {
-       
+
     }
 
     /**
@@ -95,24 +95,25 @@ class KriteriaController extends Controller
     public function update(Request $request, $id)
     {
         //
+       $max =100;
        $kriteria = Kriteria::whereId($id)->first();
+       $bobot_available = Kriteria::whereIdBeasiswa($request['id_beasiswa'])->sum('bobot');
+       $bobot_available = ($max+$kriteria->bobot) - $bobot_available;
 
-       $bobot_available = Kriteria::sum('bobot');
-       $bobot_available = 100 - $bobot_available;
        $data = $request->only([
            'nama_kriteria',
            'type',
            'bobot'
        ]);
-       if($kriteria['bobot'] == $request->bobot){
+       if($bobot_available >= $request->bobot){
             Kriteria::whereId($id)->update($data);
-            return redirect('kriteria')->with('success','Sukses update data kriteria');
+            return redirect('kategoribeasiswa/'.$request['id_beasiswa'])->with('success','Sukses update data kriteria');
        }else{
             if($bobot_available < $request->bobot){
-                return redirect('kriteria')->with('errorbobot','Nilai  bobot yang anda masukan tidak boleh lebih besar dari yang tersedia');
+                return redirect('kategoribeasiswa/'.$request['id_beasiswa'])->with('errorbobot','Nilai  bobot yang anda masukan tidak boleh lebih besar dari yang tersedia');
             }else{
                 Kriteria::whereId($id)->update($data);
-            return redirect('kriteria')->with('success','Sukses update data kriteria');
+            return redirect('kategoribeasiswa/'.$request['id_beasiswa'])->with('success','Sukses update data kriteria');
             }
        }
 

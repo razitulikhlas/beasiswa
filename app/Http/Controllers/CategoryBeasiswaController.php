@@ -41,8 +41,7 @@ class CategoryBeasiswaController extends Controller
         //
         $validateData = $request->validate([
             'title' => 'required',
-            'desc' => 'required',
-            'icon' => 'image|file|max:1024'
+            'desc' => 'required'
         ]);
         Beasiswa::create($validateData);
         return redirect('kategoribeasiswa')->with('success','Data beasiswa berhasil di tambahkan');

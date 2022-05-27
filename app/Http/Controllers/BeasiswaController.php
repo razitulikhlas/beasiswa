@@ -17,27 +17,12 @@ class BeasiswaController extends Controller
      */
     public function index()
     {
-        //
 
-        $data = Kriteria::all();
-        $siswa = Siswa::all();
-        $datasiswa = DataBeasiswa::all();
         $categoryBeasiswa = Beasiswa::all();
-
-
-
-
-
-
         return view('layouts.databeasiswa.index', [
             'data' => $categoryBeasiswa
         ]);
 
-        // return view('layouts.beasiswadinamis.list', [
-        //     'data' => $data,
-        //     'siswa' => $siswa,
-        //     'datasiswa' => $datasiswa
-        // ]);
     }
 
     /**

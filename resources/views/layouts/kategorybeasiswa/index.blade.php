@@ -23,11 +23,7 @@
                 <div class="card-content">
 
                     <div class="card-body">
-<<<<<<< HEAD:resources/views/layouts/beasiswa/index.blade.php
-                        <form class="form" action="/beasiswa" method="post" enctype="multipart/form-data">
-=======
                         <form class="form" action="/kategoribeasiswa" method="post">
->>>>>>> c3b59ed22541c4298a24374448e036469074ed41:resources/views/layouts/kategorybeasiswa/index.blade.php
                             @csrf
                             <div class="row">
                                 <div class="col-md-12 col-12">
@@ -43,19 +39,6 @@
                                     <div class="form-group">
                                         <label for="desc">Deskripsi</label>
                                         <textarea class="form-control" name="desc" id="desc" rows="3" spellcheck="false">{{ old('desc') }}</textarea>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-12">
-                                    <div class="form-group">
-                                        <img class="img-preview img-fluid mb-3 col-sm-5">
-                                        <label for="icon">Upload Icon</label>
-                                        <input class="form-control  @error('icon') is-invalid @enderror" type="file"
-                                            id="icon" name="icon" onchange="previewImage()">
-                                        @error('icon')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-12 d-flex justify-content-end">
@@ -94,7 +77,8 @@
                                             <td>{{ $item['title'] }}</td>
                                             <td>{{ $item['desc'] }}</td>
                                             <td>
-                                                <a href="/kategoribeasiswa/{{ $item['id'] }}" class="btn btn-success rounded-pill">Kriteria</a>
+                                                <a href="/kategoribeasiswa/{{ $item['id'] }}"
+                                                    class="btn btn-success rounded-pill">Kriteria</a>
                                                 <button id="edit" type="button" data-id={{ $item['id'] }}
                                                     data-title="{{ $item['title'] }}" data-desc={{ $item['desc'] }}
                                                     class="btn btn-info rounded-pill" data-bs-toggle="modal"

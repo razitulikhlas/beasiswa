@@ -15,7 +15,7 @@ class CreateTblDataBeasiswa extends Migration
     {
         Schema::create('tbl_data_beasiswa', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('id_mahasiswa');
+            $table->bigInteger('id_siswa');
             $table->bigInteger('id_beasiswa');
             $table->json('data');
             $table->timestamps();

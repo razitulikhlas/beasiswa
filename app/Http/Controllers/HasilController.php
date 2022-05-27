@@ -8,7 +8,7 @@ use App\Models\Kriteria;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 
-class DataBeasiswaController extends Controller
+class HasilController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +18,10 @@ class DataBeasiswaController extends Controller
     public function index()
     {
         $categoryBeasiswa = Beasiswa::all();
-        return view('layouts.databeasiswa.index', [
+        return view('layouts.hasil.index', [
             'data' => $categoryBeasiswa
         ]);
+
     }
 
     /**
@@ -41,19 +42,7 @@ class DataBeasiswaController extends Controller
      */
     public function store(Request $request)
     {
-        $kriteria = Kriteria::whereIdBeasiswa($request['id_beasiswa'])->get()->toArray();
-        $kriteriaData = array();
-        foreach ($kriteria as $item) {
-            $kriteriaData[strtolower(str_replace(' ', '_', $item['nama_kriteria']))] = $request[strtolower(str_replace(' ', '_', $item['nama_kriteria']))];
-        }
 
-        $data = [
-            'id_siswa' => $request['id_siswa'],
-            'id_beasiswa' => $request['id_beasiswa'],
-            'data' => json_encode($kriteriaData)
-        ];
-        DataBeasiswa::create($data);
-        return redirect('databeasiswa/' . $request['id_beasiswa'])->with('success', 'Data beasiswa berhasil di tambahkan');
     }
 
     /**
@@ -64,19 +53,21 @@ class DataBeasiswaController extends Controller
      */
     public function show($id)
     {
-        // return $this->saw($id);
-        // $data = Kriteria::whereIdBeasiswa($id)->get();
-        $siswa = Siswa::all();
-        $datasiswa = $this->getListSiswa($id);
-        return view('layouts.beasiswadinamis.index', [
-            'datakey' => $datasiswa['datakey'],
-            'siswa' => $siswa,
-            'datasiswa' => $datasiswa['datasiswa'],
-            'id_beasiswa' => $id
+        $result = $this->saw($id);
+        $data = $this->getListSiswa($id);
+
+        return view('layouts.hasil.result', [
+            'dataKeys' => $data['datakey'],
+            'result'=>$result['result'],
+            'normalisasi'=>$result['normalisasi'],
+            'dataAlternatif'=>$data['datasiswa']
         ]);
+
+
+
     }
 
-    public function saw($id)
+  public function saw($id)
     {
         $data = $this->getListSiswa($id);
         $max = array();
@@ -92,17 +83,20 @@ class DataBeasiswaController extends Controller
                 }
             }
         }
-        // return $data['kriteria'];
-        // return $dataColumn;
+
 
         foreach ($data['datasiswa'] as $key => $datasiswa) {
+             $data['normalisasi'][$key]['name'] = $datasiswa['name'];
+            $data['normalisasi'][$key]['nim'] = $datasiswa['nim'];
             foreach ($data['datakey'] as $datakey) {
                foreach($data['kriteria'] as $datakriteria){
                    if($datakey == $datakriteria['nama_kriteria']){
                        if (strtolower($datakriteria['type']) == $this->BENEFIT) {
                         $data['datasiswa'][$key][$datakey] = $datasiswa[$datakey] / $dataColumn['div' . $datakey];
+                         $data['normalisasi'][$key][$datakey] = $datasiswa[$datakey] / $dataColumn['div' . $datakey];
                     } else {
                        $data['datasiswa'][$key][$datakey] = $dataColumn['div' . $datakey] / $datasiswa[$datakey];
+                        $data['normalisasi'][$key][$datakey] = $dataColumn['div' . $datakey] / $datasiswa[$datakey];
                     }
                    }
                }
@@ -132,9 +126,11 @@ class DataBeasiswaController extends Controller
                 }
                 return ($a['saw'] > $b['saw']) ? -1 : 1;
             });
-        return $data['datasiswa'];
+          return [
+            'result'=>$data['datasiswa'],
+            'normalisasi'=>$data['normalisasi'],
+        ];
     }
-
     public function getListSiswa($id)
     {
         $kriteriaBeasiswa = Kriteria::whereIdBeasiswa($id)->get();
@@ -150,6 +146,7 @@ class DataBeasiswaController extends Controller
             $dataValueBeasiswa[$key]['name'] = $item->mahasiswa->nama;
             $dataValueBeasiswa[$key]['id_siswa'] = $item->id_siswa;
             $dataValueBeasiswa[$key]['id'] = $item->id;
+            $dataValueBeasiswa[$key]['nim'] = $item->mahasiswa->nim;
             $listValue = json_decode($item->data, true);
             foreach ($keyData as $keys) {
                 $dataValueBeasiswa[$key][$keys] = $listValue[$keys];
@@ -182,27 +179,7 @@ class DataBeasiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $kriteria = Kriteria::whereIdBeasiswa($request['id_beasiswa'])->get()->toArray();
-        $kriteriaData = array();
-        foreach ($kriteria as $item) {
-            $kriteriaData[strtolower(str_replace(' ', '_', $item['nama_kriteria']))] = $request[strtolower(str_replace(' ', '_', 'u'.$item['nama_kriteria']))];
-        }
 
-        $data = [
-            'id_siswa' => $request['uid_siswa'],
-            'id_beasiswa' => $request['id_beasiswa'],
-            'data' => json_encode($kriteriaData)
-        ];
-        DataBeasiswa::whereId($id)->update($data);
-        return redirect('databeasiswa/' . $request['id_beasiswa'])->with('success', 'Data beasiswa berhasil di tambahkan');
-
-        return $request;
-        // $data = $request->only([
-        //     'title',
-        //     'desc'
-        // ]);
-        // Beasiswa::whereId($beasiswa->id)->update($data);
-        // return redirect('beasiswa')->with('success', 'Data beasiswa berhasil di ubah');
     }
 
     /**
@@ -213,8 +190,6 @@ class DataBeasiswaController extends Controller
      */
     public function destroy($id)
     {
-        $databeasiswa = DataBeasiswa::whereId($id)->first();
-        DataBeasiswa::destroy($id);
-        return redirect('databeasiswa/'.$databeasiswa->id_beasiswa)->with('success', 'Data beasiswa berhasil di hapus');
+
     }
 }

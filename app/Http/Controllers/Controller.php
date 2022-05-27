@@ -12,6 +12,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public $BENEFIT = "benefit";
+    public $COST = "cost";
     public function makeNisn(){
         $nisn=DB::table('tbl_siswa')->count('id');
         $nomorPokokSekolah = '303501';

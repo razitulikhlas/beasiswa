@@ -4,6 +4,7 @@ use App\Http\Controllers\BeasiswaController;
 use App\Http\Controllers\CategoryBeasiswaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataBeasiswaController;
+use App\Http\Controllers\HasilController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KriteriaController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,7 @@ Route::resource('/kriteria', KriteriaController::class);
 Route::resource('/kategoribeasiswa', CategoryBeasiswaController::class);
 Route::resource('/databeasiswa', DataBeasiswaController::class);
 Route::resource('/semester', SemesterController::class);
+Route::resource('/hasil', HasilController::class);
 
 Route::get('/', function () {
     return view('welcome');

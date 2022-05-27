@@ -48,9 +48,9 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-12">
-                                    <input type="text" id="id_beasiswa"
-                                            class="form-control" name="id_beasiswa" value="{{ $id_beasiswa }}" readonly hidden>
-                                    
+                                    <input type="text" id="id_beasiswa" class="form-control" name="id_beasiswa"
+                                        value="{{ $id_beasiswa }}" readonly hidden>
+
                                 </div>
                                 <div class="col-md-12 col-12">
                                     <div class="form-group">
@@ -197,6 +197,10 @@
                                 </div>
                             </div>
                             <div class="col-md-12 col-12">
+                                <input type="text" id="id_beasiswa" class="form-control" name="id_beasiswa"
+                                    value="{{ $id_beasiswa }}" readonly hidden>
+                            </div>
+                            <div class="col-md-12 col-12">
                                 <div class="form-group">
                                     <label for="type">Type Kriteria*</label>
                                     <fieldset class="form-group">
@@ -232,18 +236,9 @@
     <script>
         $(function() {
             $(document).on('click', '#delete', function() {
-                $('#formDelete').attr('action', '/kriteria/' + $(this).data('id-kriteria'))
+                $('#formDelete').attr('action', '/kriteria/' + $(this).data('id-kriteria') /
+                    {{ $id_beasiswa }})
             })
-            // $('#useRange').hide();
-            // $('#checkRange').click(function(){
-                
-            //     if($(this).is(':checked')){
-            //         $('#useRange').show();
-            //     } else {
-            //         $('#useRange').hide();
-            //     }
-            // });
-
             $(document).on('click', '#edit', function() {
                 const id = $(this).data('id');
                 const nama_kriteria = $(this).data('nama-kriteria');

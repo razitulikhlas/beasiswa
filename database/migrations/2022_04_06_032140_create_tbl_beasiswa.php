@@ -17,7 +17,6 @@ class CreateTblBeasiswa extends Migration
             $table->id();
             $table->string('title');
             $table->string('desc');
-            $table->string('icon');
             $table->timestamps();
         });
     }
