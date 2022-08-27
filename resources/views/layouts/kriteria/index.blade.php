@@ -6,7 +6,7 @@
         </a>
     </header>
     <div class="page-heading">
-        <h3>Kriteria {{ $title }}</h3>
+        <h3>Kriteria {{ $title }} </h3>
     </div>
 
     @if (session()->has('success'))
@@ -71,8 +71,7 @@
                                             placeholder="nilai bobot" name="bobot" required
                                             oninvalid="this.setCustomValidity('nilai bobot tidak boleh kosong')"
                                             oninput="setCustomValidity('')" value="{{ old('bobot') }}">
-
-                                        <small class="text-muted">bobot yang tersedia {{ $bobot_available }}</small>
+                                        {{-- <small class="text-muted">bobot yang tersedia {{ $bobot_available }}</small> --}}
                                     </div>
                                 </div>
                                 <div class="col-12 d-flex justify-content-end">
@@ -113,6 +112,20 @@
                                             <td class="text-bold-500">{{ $item['type'] }}</td>
                                             <td class="text-bold-500">{{ $item['bobot'] }}</td>
                                             <td>
+                                                <a href="/kriteria/{{ $item['id'] }}"
+                                                    class="btn btn-success rounded-pill">SubKriteria</a>
+                                                @if ($item['is_active'] == 1)
+                                                    <button id="isactive" type="button"
+                                                        data-id-kriteria={{ $item['id'] }}
+                                                        class="btn btn-warning rounded-pill" data-bs-toggle="modal"
+                                                        data-is_active="0" data-bs-target="#nonaktifkan">Non
+                                                        Aktifkan</button>
+                                                @else
+                                                    <button id="isactive" type="button"
+                                                        data-id-kriteria={{ $item['id'] }} data-is_active="1"
+                                                        class="btn btn-primary rounded-pill" data-bs-toggle="modal"
+                                                        data-bs-target="#nonaktifkan">Aktifkan</button>
+                                                @endif
                                                 <button id="edit" type="button" data-id={{ $item['id'] }}
                                                     data-nama-kriteria="{{ $item['nama_kriteria'] }}"
                                                     data-id="{{ $item['id'] }}" data-type={{ $item['type'] }}
@@ -157,6 +170,41 @@
                     <form action="/kriteria" method="post" class="d-inline" id="formDelete">
                         @method('delete')
                         @csrf
+                        <button class="btn btn-primary ml-1">
+                            <i class="bx bx-check d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Accept</span>
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="nonaktifkan" tabindex="-1" aria-labelledby="exampleModalCenterTitle"
+        style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Kriteria
+                    </h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Apakah anda yakin ingin merubahnya?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <form action="/nonaktifkan" method="post" class="d-inline" id="formIsActive">
+                        @csrf
+                        <input type="text" id="is_active" class="form-control" placeholder="Nama kriteria"
+                            name="is_active" hidden>
                         <button class="btn btn-primary ml-1">
                             <i class="bx bx-check d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Accept</span>
@@ -235,9 +283,13 @@
 
     <script>
         $(function() {
+            $(document).on('click', '#isactive', function() {
+                const isactive = $(this).data('is_active');
+                $("#is_active").val(isactive);
+                $('#formIsActive').attr('action', '/isactive/' + $(this).data('id-kriteria'))
+            })
             $(document).on('click', '#delete', function() {
-                $('#formDelete').attr('action', '/kriteria/' + $(this).data('id-kriteria') /
-                    {{ $id_beasiswa }})
+                $('#formDelete').attr('action', '/kriteria/' + $(this).data('id-kriteria'))
             })
             $(document).on('click', '#edit', function() {
                 const id = $(this).data('id');

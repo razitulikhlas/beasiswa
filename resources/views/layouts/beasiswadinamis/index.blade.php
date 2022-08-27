@@ -47,22 +47,35 @@
                                     </div>
                                 </div>
 
-                                @foreach ($datakey as $item)
+                                @foreach ($datakey as $key => $item)
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="prodi">{{ $item }}</label>
-                                            <input type="text" id="{{ str_replace(' ', '_', $item) }}"
-                                                class="form-control @error('prodi') is-invalid @enderror"
-                                                placeholder="{{ $item }}"
-                                                name="{{ str_replace(' ', '_', $item) }}" required
-                                                oninvalid="this.setCustomValidity('data prodi tidak boleh kosong')"
-                                                oninput="setCustomValidity('')"
-                                                value="{{ old(str_replace(' ', '_', $item)) }}">
-                                            @error('prodi')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
+                                            @if (sizeof($subkriteria[$item]) != 0)
+                                                <fieldset class="form-group">
+                                                    <select class="form-select" id="{{ str_replace(' ', '_', $item) }}"
+                                                        name="{{ str_replace(' ', '_', $item) }}">
+                                                        @foreach ($subkriteria[$item] as $itemsubkriteria)
+                                                            <option value="{{ $itemsubkriteria['value'] }}" selected>
+                                                                {{ $itemsubkriteria['title'] }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </fieldset>
+                                            @else
+                                                <input type="number" id="{{ str_replace(' ', '_', $item) }}"
+                                                    class="form-control @error('prodi') is-invalid @enderror"
+                                                    placeholder="{{ $item }}"
+                                                    name="{{ str_replace(' ', '_', $item) }}" required
+                                                    oninvalid="this.setCustomValidity('data prodi tidak boleh kosong')"
+                                                    oninput="setCustomValidity('')"
+                                                    value="{{ old(str_replace(' ', '_', $item)) }}">
+                                                @error('prodi')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            @endif
+
                                         </div>
                                     </div>
                                 @endforeach
@@ -201,17 +214,30 @@
                                 <div class="col-md-12 col-12">
                                     <div class="form-group">
                                         <label for="prodi">{{ $item }}</label>
-                                        <input type="text" id="u{{ str_replace(' ', '_', $item) }}"
-                                            class="form-control @error('prodi') is-invalid @enderror"
-                                            placeholder="{{ $item }}" name="u{{ str_replace(' ', '_', $item) }}"
-                                            required oninvalid="this.setCustomValidity('data prodi tidak boleh kosong')"
-                                            oninput="setCustomValidity('')"
-                                            value="{{ old(str_replace(' ', '_', $item)) }}">
-                                        @error('prodi')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
+                                        @if (sizeof($subkriteria[$item]) != 0)
+                                            <fieldset class="form-group">
+                                                <select class="form-select" id="{{ str_replace(' ', '_', $item) }}"
+                                                    name="u{{ str_replace(' ', '_', $item) }}">
+                                                    @foreach ($subkriteria[$item] as $itemsubkriteria)
+                                                        <option value="{{ $itemsubkriteria['value'] }}" selected>
+                                                            {{ $itemsubkriteria['title'] }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </fieldset>
+                                        @else
+                                            <input type="number" id="u{{ str_replace(' ', '_', $item) }}"
+                                                class="form-control @error('prodi') is-invalid @enderror"
+                                                placeholder="{{ $item }}"
+                                                name="u{{ str_replace(' ', '_', $item) }}" required
+                                                oninvalid="this.setCustomValidity('data prodi tidak boleh kosong')"
+                                                oninput="setCustomValidity('')"
+                                                value="{{ old(str_replace(' ', '_', $item)) }}">
+                                            @error('prodi')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach

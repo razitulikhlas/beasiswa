@@ -15,7 +15,7 @@
                 <div class="row">
                     @foreach ($data as $item)
                         <div class="col-6 col-lg-3 col-md-6">
-                            <a href="/databeasiswa/{{ $item->id }}">
+                            <a href="/ahp/{{ $item->id }}">
                                 <div class="card">
                                     <div class="card-body px-3 py-4-5">
                                         <div class="row">

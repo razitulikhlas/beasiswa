@@ -25,7 +25,7 @@ class DataBeasiswa extends Authenticatable
         'data'
     ];
 
-        public function mahasiswa(){
+    public function mahasiswa(){
         return $this->hasOne(Siswa::class,'id','id_siswa');
     }
 

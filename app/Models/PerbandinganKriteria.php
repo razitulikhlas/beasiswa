@@ -8,10 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Kriteria extends Authenticatable
+class PerbandinganKriteria extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    public $table = "tbl_kriteria";
+    public $table = "tbl_perbandingan_kriteria";
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +19,9 @@ class Kriteria extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'id_beasiswa','nama_kriteria','type','bobot','is_active'
+           'kriteria1',
+           'kriteria2',
+           'nilai',
     ];
 
 

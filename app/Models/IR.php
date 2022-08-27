@@ -8,10 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Kriteria extends Authenticatable
+class IR extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    public $table = "tbl_kriteria";
+    public $table = "tbl_ir";
 
     /**
      * The attributes that are mass assignable.
@@ -19,9 +19,8 @@ class Kriteria extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'id_beasiswa','nama_kriteria','type','bobot','is_active'
+        'jumlah','nilai'
     ];
-
 
 
     /**
@@ -43,4 +42,3 @@ class Kriteria extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 }
-

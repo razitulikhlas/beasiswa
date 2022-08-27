@@ -28,15 +28,6 @@ class SiswaController extends Controller
     {   //
 
         $jurusan = Jurusan::all()->toArray();
-
-
-
-        // $filterProdi = array_filter((array)$prodi,function($item)use($jurusan){
-        //    if($item['id_jurusan'] == $jurusan[0]['id'])
-        //         return $item;
-        // });
-
-        // return $filterProdi
         return view('layouts.siswa.add', [
             'jurusan' => $jurusan
         ]);
@@ -123,8 +114,6 @@ class SiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-
         $data = Siswa::whereId($id)->first();
         $rules = [
             'nama' => 'required',

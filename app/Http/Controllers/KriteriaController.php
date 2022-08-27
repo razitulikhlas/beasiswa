@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Beasiswa;
 use App\Models\Kriteria;
+use App\Models\Subkriteria;
 use Illuminate\Http\Request;
 
 class KriteriaController extends Controller
@@ -28,6 +29,14 @@ class KriteriaController extends Controller
         ]);
     }
 
+    public function isactive(Request $request,$id){
+        $kriteria =Kriteria::whereId($id)->first();
+        $id_beasiswa = $kriteria->id_beasiswa;
+
+        $kriteria->update($request->only(['is_active']));
+        return redirect('kategoribeasiswa/'.$id_beasiswa)->with('success','Data kriteria berhasil diupdate');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -46,21 +55,17 @@ class KriteriaController extends Controller
      */
     public function store(Request $request)
     {
-       $bobot_available = Kriteria::whereIdBeasiswa($request['id_beasiswa'])->sum('bobot');
-       $bobot_available = 100 - $bobot_available;
-       $data = $request->only([
-           'nama_kriteria',
-           'type',
-           'bobot',
-           'id_beasiswa'
-       ]);
+    //    $bobot_available = Kriteria::whereIdBeasiswa($request['id_beasiswa'])->sum('bobot');
+    //    $bobot_available = 100 - $bobot_available;
+        $data = $request->only([
+            'nama_kriteria',
+            'type',
+            'bobot',
+            'id_beasiswa'
+        ]);
 
-       if($bobot_available < $request->bobot){
-           return redirect('kategoribeasiswa/'.$data['id_beasiswa'])->with('errorbobot','Nilai  bobot yang anda masukan tidak boleh lebih besar dari yang tersedia');
-       }else{
-           Kriteria::create($data);
-           return redirect('kategoribeasiswa/'.$data['id_beasiswa'])->with('success','Sukses menambahkan data kriteria');
-       }
+        Kriteria::create($data);
+        return redirect('kategoribeasiswa/'.$data['id_beasiswa'])->with('success','Sukses menambahkan data kriteria');
     }
 
     /**
@@ -71,7 +76,16 @@ class KriteriaController extends Controller
      */
     public function show($id)
     {
+            $kriteria = Kriteria::whereId($id)->first();
+            $subKriteria = Subkriteria::whereIdKriteria($id)->get();
+            return view('layouts.subkriteria.index',
+            [
+                "title"=>$kriteria->nama_kriteria,
+                "data"=>$subKriteria,
+                "id_kriteria"=>$id
 
+            ]
+        );
     }
 
     /**
@@ -94,28 +108,15 @@ class KriteriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-       $max =100;
-       $kriteria = Kriteria::whereId($id)->first();
-       $bobot_available = Kriteria::whereIdBeasiswa($request['id_beasiswa'])->sum('bobot');
-       $bobot_available = ($max+$kriteria->bobot) - $bobot_available;
+        $data = $request->only([
+            'nama_kriteria',
+            'type',
+            'bobot'
+        ]);
 
-       $data = $request->only([
-           'nama_kriteria',
-           'type',
-           'bobot'
-       ]);
-       if($bobot_available >= $request->bobot){
-            Kriteria::whereId($id)->update($data);
-            return redirect('kategoribeasiswa/'.$request['id_beasiswa'])->with('success','Sukses update data kriteria');
-       }else{
-            if($bobot_available < $request->bobot){
-                return redirect('kategoribeasiswa/'.$request['id_beasiswa'])->with('errorbobot','Nilai  bobot yang anda masukan tidak boleh lebih besar dari yang tersedia');
-            }else{
-                Kriteria::whereId($id)->update($data);
-            return redirect('kategoribeasiswa/'.$request['id_beasiswa'])->with('success','Sukses update data kriteria');
-            }
-       }
+        Kriteria::whereId($id)->update($data);
+        return redirect('kategoribeasiswa/'.$request['id_beasiswa'])->with('success','Sukses update data kriteria');
+
 
     }
 
@@ -127,7 +128,6 @@ class KriteriaController extends Controller
      */
     public function destroy($id)
     {
-
         Kriteria::destroy($id);
         return redirect('kategoribeasiswa')->with('success','Data kriteria berhasil dihapus');
     }

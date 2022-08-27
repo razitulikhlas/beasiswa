@@ -18,16 +18,17 @@
             <div class="col-lg-5 col-12 align-self-center">
 
                 <div id="auth-left">
-
+                    @if (session()->has('loginError'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('loginError') }}
+                        </div>
+                    @endif
                     <div class="card" style="background: white">
                         <div class="card-content">
                             <div class="card-body">
                                 <h1 class="auth-title text-center">Login</h1>
                                 <div class="mb-2 d-flex justify-content-center">
-                                    <a href="index.html">
-                                        <img src="https://simawa.pnp.ac.id/image/pnp.png"
-                                            style="width:150px;height:150px; alt=" Logo">
-                                    </a>
+
                                 </div>
                                 <div class="text-center">
                                     <p class="auth-subtitle">Sistem Informasi Manajemen</p>
@@ -35,16 +36,18 @@
                                 </div>
 
 
-                                <form action="index.html">
+                                <form action="/login" method="post">
+                                    @csrf
                                     <div class="form-group position-relative has-icon-left mb-4">
-                                        <input type="text" class="form-control form-control-xl" placeholder="Username">
+                                        <input type="text" class="form-control form-control-xl" placeholder="email"
+                                            name="email">
                                         <div class="form-control-icon">
                                             <i class="bi bi-person"></i>
                                         </div>
                                     </div>
                                     <div class="form-group position-relative has-icon-left mb-4">
                                         <input type="password" class="form-control form-control-xl"
-                                            placeholder="Password">
+                                            placeholder="Password" name="password">
                                         <div class="form-control-icon">
                                             <i class="bi bi-shield-lock"></i>
                                         </div>

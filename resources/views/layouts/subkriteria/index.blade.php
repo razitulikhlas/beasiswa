@@ -6,39 +6,60 @@
         </a>
     </header>
     <div class="page-heading">
-        <h3>Jenis Beasiswa</h3>
+        <h3>Kriteria {{ $title }}</h3>
     </div>
 
     @if (session()->has('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+    @if (session()->has('errorbobot'))
+        <div class="alert alert-danger">{{ session('errorbobot') }}</div>
+    @endif
 
+    {{-- <div class="col col-lg-1 offset-lg-11">
+        <a href="/kriteria" class="">Back</a>
+    </div> --}}
     <div class="col-12 row">
-        <div class="col-4">
+        <div class="col-3">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Tambahkan data Beasiswa</h4>
+                    <h4 class="card-title">Tambahkan data sub kriteria</h4>
                 </div>
 
                 <div class="card-content">
 
                     <div class="card-body">
-                        <form class="form" action="/kategoribeasiswa" method="post">
+                        <form class="form" action="/subkriteria" method="post">
                             @csrf
                             <div class="row">
                                 <div class="col-md-12 col-12">
                                     <div class="form-group">
-                                        <label for="title">Nama Beasiswa*</label>
-                                        <input type="text" id="title" class="form-control"
-                                            placeholder="Nama Beasiswa" name="title" required
-                                            oninvalid="this.setCustomValidity('data nama beasiswa tidak boleh kosong')"
+                                        <label for="kriteria">Nama Sub Kriteria*</label>
+                                        <input type="text" id="title"
+                                            class="form-control @error('title') is-invalid @enderror"
+                                            placeholder="Nama kriteria" name="title" required
+                                            oninvalid="this.setCustomValidity('data kriteria tidak boleh kosong')"
                                             oninput="setCustomValidity('')" value="{{ old('title') }}">
+                                        @error('tile')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-12">
+                                    <input type="text" id="id_kriteria" class="form-control" name="id_kriteria"
+                                        value="{{ $id_kriteria }}" readonly hidden>
+
+                                </div>
+                                <div class="col-md-12 col-12">
                                     <div class="form-group">
-                                        <label for="desc">Deskripsi</label>
-                                        <textarea class="form-control" name="desc" id="desc" rows="3" spellcheck="false">{{ old('desc') }}</textarea>
+                                        <label for="value">Nilai Sub kriteria</label>
+                                        <input type="text" id="value"
+                                            class="form-control @if (session('errorvalue')) is-invalid @endif"
+                                            placeholder="nilai Sub kriteria" name="value" required
+                                            oninvalid="this.setCustomValidity('nilai sub kriteria tidak boleh kosong')"
+                                            oninput="setCustomValidity('')" value="{{ old('value') }}">
                                     </div>
                                 </div>
                                 <div class="col-12 d-flex justify-content-end">
@@ -52,10 +73,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-8">
+        <div class="col-9">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Table Beasiswa</h4>
+                    <h4 class="card-title">Table Kriteria</h4>
                 </div>
 
                 <div class="card-content">
@@ -65,47 +86,29 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Beasiswa</th>
-                                        <th>Deskripsi</th>
+                                        <th>Sub Kriteria</th>
+                                        <th>Nilai Subkriteria</th>
                                         <th>ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($data as $item)
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item['title'] }}</td>
-                                            <td>{{ $item['desc'] }}</td>
+                                            <td class="text-bold-500">{{ $loop->iteration }}</td>
+                                            <td class="text-bold-500">{{ $item['title'] }}</td>
+                                            <td class="text-bold-500">{{ $item['value'] }}</td>
                                             <td>
-                                                <a href="/kategoribeasiswa/{{ $item['id'] }}"
-                                                    class="btn btn-success rounded-pill">Kriteria</a>
                                                 <button id="edit" type="button" data-id={{ $item['id'] }}
-                                                    data-title="{{ $item['title'] }}" data-desc={{ $item['desc'] }}
-                                                    class="btn btn-info rounded-pill" data-bs-toggle="modal"
-                                                    data-bs-target="#update">Edit</button>
+                                                    data-sub-kriteria="{{ $item['title'] }}" data-id="{{ $item['id'] }}"
+                                                    data-value={{ $item['value'] }} class="btn btn-info rounded-pill"
+                                                    data-bs-toggle="modal" data-bs-target="#update">Edit</button>
 
                                                 <button type="button" class="btn btn-danger rounded-pill"
-                                                    data-bs-toggle="modal" data-id-beasiswa={{ $item['id'] }}
+                                                    data-bs-toggle="modal" data-id-kriteria={{ $item['id'] }}
                                                     data-bs-target="#exampleModalCenter" id="delete">Delete</button>
                                             </td>
                                         </tr>
                                     @endforeach
-                                    {{-- @foreach ($data as $item)
-                                        <tr>
-                                            <td class="text-bold-500">{{ $loop->iteration }}</td>
-                                            <td class="text-bold-500">{{ $item['title'] }}</td>
-                                            <td class="text-bold-500">{{ $item['desc'] }}</td>
-                                            <td>
-                                                <button id="edit" type="button" data-id={{ $item['id'] }}
-                                                    data-title="{{ $item['title'] }}" data-desc={{ $item['desc'] }}
-                                                    class="btn btn-info rounded-pill" data-bs-toggle="modal"
-                                                    data-bs-target="#update">Edit</button>
-                                                <button type="button" class="btn btn-danger rounded-pill"
-                                                    data-bs-toggle="modal" data-id-beasiswa={{ $item['id'] }}
-                                                    data-bs-target="#exampleModalCenter" id="delete">Delete</button>
-                                            </td>
-                                        </tr>
-                                    @endforeach --}}
                                 </tbody>
                             </table>
                         </div>
@@ -136,7 +139,7 @@
                         <i class="bx bx-x d-block d-sm-none"></i>
                         <span class="d-none d-sm-block">Close</span>
                     </button>
-                    <form action="/kategoribeasiswa" method="post" class="d-inline" id="formDelete">
+                    <form action="/subkriteria" method="post" class="d-inline" id="formDelete">
                         @method('delete')
                         @csrf
                         <button class="btn btn-primary ml-1">
@@ -156,25 +159,41 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="exampleModalLabel">Update data</h4>
+
                 </div>
                 <div class="modal-body">
-                    <form class="form" action="/kategoribeasiswa" method="post" id="formEdit">
+                    <form class="form" method="post" id="formEdit">
                         @method('put')
                         @csrf
                         <div class="row">
                             <div class="col-md-12 col-12">
                                 <div class="form-group">
-                                    <label for="title">Nama Beasiswa*</label>
-                                    <input type="text" id="Utitle" class="form-control"
-                                        placeholder="Nama Beasiswa" name="title" required
-                                        oninvalid="this.setCustomValidity('data nama beasiswa tidak boleh kosong')"
-                                        oninput="setCustomValidity('')" value="{{ old('title') }}">
+                                    <label for="usub_kriteria">Nama Sub Kriteria*</label>
+                                    <input type="text" id="usub_kriteria"
+                                        class="form-control @error('usub_kriteria') is-invalid @enderror"
+                                        placeholder="Nama kriteria" name="usub_kriteria" required
+                                        oninvalid="this.setCustomValidity('data kriteria tidak boleh kosong')"
+                                        oninput="setCustomValidity('')" value="{{ old('usub_kriteria') }}">
+                                    @error('kriteria')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-12 col-12">
+                                <input type="text" id="id_kriteria" class="form-control" name="id_kriteria"
+                                    value="{{ $id_kriteria }}" readonly hidden>
+
+                            </div>
+                            <div class="col-md-12 col-12">
                                 <div class="form-group">
-                                    <label for="desc">Deskripsi</label>
-                                    <textarea class="form-control" name="desc" id="Udesc" rows="3" spellcheck="false">{{ old('desc') }}</textarea>
+                                    <label for="uvalue">Nilai Sub kriteria</label>
+                                    <input type="text" id="uvalue"
+                                        class="form-control @if (session('errorvalue')) is-invalid @endif"
+                                        placeholder="nilai Sub kriteria" name="uvalue" required
+                                        oninvalid="this.setCustomValidity('nilai sub kriteria tidak boleh kosong')"
+                                        oninput="setCustomValidity('')" value="{{ old('uvalue') }}">
                                 </div>
                             </div>
                             <div class="col-12 d-flex justify-content-end">
@@ -191,32 +210,18 @@
     <script>
         $(function() {
             $(document).on('click', '#delete', function() {
-                $('#formDelete').attr('action', '/kategoribeasiswa/' + $(this).data('id-beasiswa'))
+                $('#formDelete').attr('action', '/subkriteria/' + $(this).data('id-kriteria'))
             })
-
             $(document).on('click', '#edit', function() {
                 const id = $(this).data('id');
-                const title = $(this).data('title');
-                const desc = $(this).data('desc');
+                const sub_kriteria = $(this).data('sub-kriteria');
+                const value = $(this).data('value');
 
-                $("#Utitle").val(title);
-                $("#Udesc").val(desc);
-                $('#formEdit').attr('action', '/kategoribeasiswa/' + id);
+
+                $("#usub_kriteria").val(sub_kriteria);
+                $("#uvalue").val(value);
+                $('#formEdit').attr('action', '/kriteria/' + id);
             })
         });
-
-        function previewImage() {
-            const image = document.querySelector('#icon');
-            const previewImage = document.querySelector('.img-preview');
-
-            previewImage.style.display = 'block';
-
-            const offReader = new FileReader();
-            offReader.readAsDataURL(image.files[0]);
-
-            offReader.onload = function(oFREvent) {
-                previewImage.src = oFREvent.target.result;
-            }
-        }
     </script>
 @endsection

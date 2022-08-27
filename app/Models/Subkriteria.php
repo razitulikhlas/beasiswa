@@ -8,21 +8,21 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Kriteria extends Authenticatable
+class Subkriteria extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-    public $table = "tbl_kriteria";
+     use HasApiTokens, HasFactory, Notifiable;
+    protected $table = "tbl_subkriteria";
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'id_beasiswa','nama_kriteria','type','bobot','is_active'
+protected $fillable = [
+        'id_kriteria',
+        'title',
+        'value',
     ];
-
-
 
     /**
      * The attributes that should be hidden for serialization.
@@ -34,6 +34,12 @@ class Kriteria extends Authenticatable
         'remember_token',
     ];
 
+
+
+    public function kriteria(){
+        return $this->hasOne(Kriteria::class,'id','id_kriteria');
+    }
+
     /**
      * The attributes that should be cast.
      *
@@ -43,4 +49,5 @@ class Kriteria extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 }
+
 

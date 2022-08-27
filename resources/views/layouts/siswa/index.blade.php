@@ -56,8 +56,8 @@
                                                     <button type="button" class="btn btn-danger rounded-pill"
                                                         data-bs-toggle="modal" data-id-siswa={{ $item['id'] }}
                                                         data-bs-target="#exampleModalCenter" id="delete">Delete</button>
-                                                    <a href="/semester/{{ $item['id'] }}/edit"
-                                                        class="btn btn-info rounded-pill">Nilai Semester</a>
+                                                    {{-- <a href="/semester/{{ $item['id'] }}/edit"
+                                                        class="btn btn-info rounded-pill">Nilai Semester</a> --}}
                                                 </td>
                                             </tr>
                                         @endforeach

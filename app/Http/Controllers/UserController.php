@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Beasiswa;
+use App\Models\DataBeasiswa;
 use App\Models\Kriteria;
+use App\Models\Siswa;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class CategoryBeasiswaController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +18,12 @@ class CategoryBeasiswaController extends Controller
      */
     public function index()
     {
-        //
-        $data = Beasiswa::all();
-        return view('layouts.kategorybeasiswa.index',['data'=>$data]);
+
+        $data = User::all();
+        return view('layouts.user.index',[
+            'data'=>$data
+        ]);
+
     }
 
     /**
@@ -38,13 +44,18 @@ class CategoryBeasiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $validateData = $request->validate([
-            'title' => 'required',
-            'desc' => 'required'
+        $data =$request->only([
+            'name','email','password'
         ]);
-        Beasiswa::create($validateData);
-        return redirect('kategoribeasiswa')->with('success','Data beasiswa berhasil di tambahkan');
+
+        if($request['password'] !== $request['confirmpassword'] ){
+            return redirect('user')->with('errorbobot','password dan confirm password yang anda masukan tidak sama');
+        }else{
+            $data['password'] = bcrypt($data['password']);
+            User::create($data);
+            return redirect('user')->with('success', 'Data admin berhasil di tambahkan');
+        }
+
     }
 
     /**
@@ -53,18 +64,9 @@ class CategoryBeasiswaController extends Controller
      * @param  \App\Models\Beasiswa  $beasiswa
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Beasiswa $beasiswa)
     {
-        $data = Kriteria::whereIdBeasiswa($id)->get();
-        // $bobot_available = Kriteria::whereIdBeasiswa($id)->sum('bobot');
-        $kategory = Beasiswa::whereId($id)->first();
-        // $bobot_available = 100 - $bobot_available;
-
-        return view('layouts.kriteria.index',[
-            'data'=>$data,
-            'id_beasiswa'=>$id,
-            'title'=>$kategory->title
-        ]);
+        //
     }
 
     /**
@@ -85,15 +87,9 @@ class CategoryBeasiswaController extends Controller
      * @param  \App\Models\Beasiswa  $beasiswa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Beasiswa $beasiswa)
     {
 
-         $data = $request->only([
-            'title',
-            'desc'
-        ]);
-        Beasiswa::whereId($id)->update($data);
-        return redirect('kategoribeasiswa')->with('success','Data beasiswa berhasil di ubah');
     }
 
     /**
@@ -105,7 +101,7 @@ class CategoryBeasiswaController extends Controller
     public function destroy($id)
     {
         //
-        Beasiswa::destroy($id);
-        return redirect('kategoribeasiswa')->with('success','Data beasiswa berhasil di hapus');
+        User::destroy($id);
+        return redirect('user')->with('success', 'Data user berhasil di hapus');
     }
 }

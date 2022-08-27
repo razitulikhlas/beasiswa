@@ -35,8 +35,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (isset($dataAlternatif))
-                                        @foreach ($dataAlternatif as $item)
+                                    @if (isset($first))
+                                        @foreach ($first as $item)
                                             <tr>
                                                 <td class="text-bold-500">{{ $loop->iteration }}</td>
                                                 <td class="text-bold-500">{{ $item['name'] }}</td>
@@ -60,7 +60,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Table Normalisasi</h4>
+                    <h4 class="card-title">Table Ternomalisasi</h4>
                 </div>
 
                 <div class="card-content">
@@ -104,7 +104,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Table Hasil Perhitungan</h4>
+                    <h4 class="card-title">Table Bobot</h4>
                 </div>
 
                 <div class="card-content">
@@ -119,12 +119,12 @@
                                         @foreach ($dataKeys as $item)
                                             <th>{{ $item }}</th>
                                         @endforeach
-                                        <th>PERHITUNGAN SAW</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (isset($result))
-                                        @foreach ($result as $item)
+                                    @if (isset($bobot))
+                                        @foreach ($bobot as $item)
                                             <tr>
                                                 <td class="text-bold-500">{{ $loop->iteration }}</td>
                                                 <td class="text-bold-500">{{ $item['name'] }}</td>
@@ -132,7 +132,85 @@
                                                 @foreach ($dataKeys as $value)
                                                     <td class="text-bold-500">{{ $item[$value] }}</td>
                                                 @endforeach
-                                                <td class="text-bold-500">{{ $item['saw'] }}</td>
+
+                                            </tr>
+                                        @endforeach
+                                    @endif
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Table Pengukuran Jarak</h4>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped  mb-0" id="example1">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>NAME</th>
+                                        <th>NISN</th>
+                                        <th>MAX</th>
+                                        <th>MIN</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (isset($plusminus))
+                                        @foreach ($plusminus as $item)
+                                            <tr>
+                                                <td class="text-bold-500">{{ $loop->iteration }}</td>
+                                                <td class="text-bold-500">{{ $item['name'] }}</td>
+                                                <td class="text-bold-500">{{ $item['nim'] }}</td>
+                                                <td class="text-bold-500">{{ $item['plus'] }}</td>
+                                                <td class="text-bold-500">{{ $item['minus'] }}</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Table Hasil Perhitungan</h4>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped  mb-0" id="example1">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>NAME</th>
+                                        <th>NISN</th>
+                                        <th>PERHITUNGAN Topsis</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (isset($finish))
+                                        @foreach ($finish as $item)
+                                            <tr>
+                                                <td class="text-bold-500">{{ $loop->iteration }}</td>
+                                                <td class="text-bold-500">{{ $item['name'] }}</td>
+                                                <td class="text-bold-500">{{ $item['nim'] }}</td>
+                                                <td class="text-bold-500">{{ $item['value'] }}</td>
                                             </tr>
                                         @endforeach
                                     @endif
