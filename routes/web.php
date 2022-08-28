@@ -46,7 +46,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('matrikkriteria', [AhpController::class, 'matrikkriteria']);
     Route::post('matrikalternatif', [AhpController::class, 'matrikalternatif']);
     Route::post('alternatif/{no}', [AhpController::class, 'showAlternatif']);
-    Route::post('hasil', [AhpController::class, 'hasil']);
+    Route::post('rangking', [AhpController::class, 'hasil']);
     Route::resource('/ahp', AhpController::class);
 });
 

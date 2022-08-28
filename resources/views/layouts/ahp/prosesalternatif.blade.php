@@ -112,7 +112,7 @@
                                 {{-- n {{ $jumlahkriteria }}
                                 no {{ $no }} --}}
                                 @if ($jumlahkriteria == $no)
-                                    <form action="hasil" method="POST">
+                                    <form action="rangking" method="POST">
                                         @csrf
                                         <input type="text" name="id" value="{{ $id }}" hidden>
                                         <button type="submit" class="btn btn-primary" style="float: right;">
