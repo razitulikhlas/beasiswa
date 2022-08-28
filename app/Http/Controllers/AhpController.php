@@ -60,12 +60,15 @@ class AhpController extends Controller
      */
     public function show($id)
     {
-        $kriteria = Kriteria::whereIdBeasiswa($id)->get();
+        $kriteria = Kriteria::whereIdBeasiswa($id)->whereIsActive(1)->get();
         $nama = array();
         $jumlaKriteria = 0;
         foreach ($kriteria as $key => $value) {
             $nama[$key] = $value->nama_kriteria;
             $jumlaKriteria++;
+        }
+        if($jumlaKriteria <= 2){
+            return view('layouts.hasil.erorsatu');
         }
         // return $jumlaKriteria;
         return view('layouts.ahp.pilihperbandingan', [
@@ -109,7 +112,7 @@ class AhpController extends Controller
         $matrik = array();
         $urut     = 0;
         $jumlaKriteria = $request['jumlahkriteria'];
-        $kriteria = Kriteria::whereIdBeasiswa($request['id'])->get();
+        $kriteria = Kriteria::whereIdBeasiswa($request['id'])->whereIsActive(1)->get();
         $nama = array();
         foreach ($kriteria as $key => $value) {
             $nama[$key] = $value->nama_kriteria;
@@ -325,7 +328,7 @@ class AhpController extends Controller
     {
         // menghitung perangkingan
         $id = $request['id'];
-        $kriteria = Kriteria::whereIdBeasiswa($id)->get();
+        $kriteria =  Kriteria::whereIdBeasiswa($id)->whereIsActive(1)->get();
         $siswa = Siswa::all();
         $jmlKriteria     = sizeof($kriteria);
         $jmlAlternatif    = sizeof($siswa);
@@ -623,7 +626,7 @@ class AhpController extends Controller
     // berdasarkan urutan ke berapa (C1, C2, C3)
     function getKriteriaID($no_urut, $id)
     {
-        $kriteria  = Kriteria::whereIdBeasiswa($id)->get();
+        $kriteria  =  Kriteria::whereIdBeasiswa($id)->whereIsActive(1)->get();
         foreach ($kriteria as $value) {
             $listID[] = $value->id;
         }
@@ -631,7 +634,7 @@ class AhpController extends Controller
     }
     function getKriteriaNama($no_urut, $id)
     {
-        $kriteria  = Kriteria::whereIdBeasiswa($id)->get();
+        $kriteria  = Kriteria::whereIdBeasiswa($id)->whereIsActive(1)->get();
         foreach ($kriteria as $value) {
             $listID[] = $value->nama_kriteria;
         }
