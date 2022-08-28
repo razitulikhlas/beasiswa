@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Beasiswa;
+use App\Models\Kriteria;
 use App\Models\Subkriteria;
 use Illuminate\Http\Request;
 
@@ -82,22 +83,18 @@ class SubkriteriaController extends Controller
     public function update(Request $request, $id)
     {
 
-        $validateData = $request->validate([
-            'usub_kriteria' => 'required',
-            'uvalue' => 'required',
-            'id_kriteria' => 'required',
-        ]);
-
+        // return $request;
+        $Kriteria = Subkriteria::whereId($id)->first();
+        // return $Kriteria;
         $update =  [
-            "title"=>$validateData['usub_kriteria'],
-            "value"=>$validateData['uvalue'],
-            "id_kriteria"=>$validateData['id_kriteria'],
+            "title"=>$request['usub_kriteria'],
+            "value"=>$request['uvalue'],
         ];
 
 
         Subkriteria::whereId($id)->update($update);
 
-        return redirect('kriteria/' . $request['id_kriteria'])->with('success', 'Data Siswa berhasil diupdate');
+        return redirect('kriteria/' . $Kriteria->id_kriteria)->with('success', 'Data Siswa berhasil diupdate');
     }
 
 

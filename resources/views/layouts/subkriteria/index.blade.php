@@ -220,7 +220,7 @@
                 $("#usub_kriteria").val(sub_kriteria);
                 $("#uvalue").val(value);
                 $("#uid_kriteria").val(id);
-                $('#formEdit').attr('action', '/kriteria/' + id);
+                $('#formEdit').attr('action', '/subkriteria/' + id);
             })
         });
     </script>

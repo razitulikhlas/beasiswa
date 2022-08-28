@@ -120,7 +120,7 @@ class KriteriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // return $request->all();
+
 
         $kriteria = Kriteria::whereId($id)->first();
         $namakriteria = strtolower(str_replace(' ', '_', $kriteria->nama_kriteria));
