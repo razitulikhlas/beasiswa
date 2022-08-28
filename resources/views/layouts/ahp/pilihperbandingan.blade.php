@@ -19,8 +19,8 @@
                                     @php
                                         $urut = 0;
                                     @endphp
-                                    @for ($x = 0; $x <= $n - 2; $x++)
-                                        @for ($y = $x + 1; $y <= $n - 1; $y++)
+                                    @for ($x = 0; $x <= $jumlahkriteria - 2; $x++)
+                                        @for ($y = $x + 1; $y <= $jumlahkriteria - 1; $y++)
                                             @php
                                                 $urut++;
                                             @endphp
@@ -52,7 +52,7 @@
                                             </tr>
                                         @endfor
                                     @endfor
-                                    <input type="text" name="n" value="{{ $n }}" hidden>
+                                    <input type="text" name="jumlahkriteria" value="{{ $jumlahkriteria }}" hidden>
                                     <input type="text" name="id" value="{{ $id }}" hidden>
 
                                 </tbody>

@@ -28,8 +28,6 @@
 
                                         </tr>
                                     @endfor
-                                    {{-- for ($x = 0; $x <= $n - 1; $x++) { echo '<tr>' ; echo '<td>' . getKriteriaNama($x) . '</td>' ; for ($y=0; $y
-                    <=$n - 1; $y++) { echo '<td>' . round($matrik[$x][$y], 5) . '</td>' ; } echo '</tr>' ; } --}}
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -37,10 +35,6 @@
                                         @for ($i = 0; $i <= $n - 1; $i++)
                                             <th>{{ round($jmlmpb[$i], 5) }}</th>
                                         @endfor
-
-                                        {{-- for ($i = 0; $i <= $n - 1; $i++) {
-                        echo '<th>' .  . '</th>';
-                    } --}}
                                     </tr>
                                 </tfoot>
                             </table>
@@ -111,9 +105,10 @@
                             @else
                                 <br>
 
-                                <form action="alternatif/{{ $no + 1 }}" method="POST">
+                                <form action="alternatif/{{ $no }}" method="POST">
                                     @csrf
                                     <input type="text" name="id" value="{{ $id }}" hidden>
+                                    <input type="text" name="jumlahkriteria" value="{{ $jumlahkriteria }}" hidden>
                                     <button type="submit" class="btn btn-primary" style="float: right;">
                                         <i class="right arrow icon"></i>
                                         Lanjut

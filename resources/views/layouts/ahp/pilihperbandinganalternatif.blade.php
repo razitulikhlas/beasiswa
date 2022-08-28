@@ -54,6 +54,7 @@
                                         @endfor
                                     @endfor
                                     <input type="text" name="n" value="{{ $n }}" hidden>
+                                    <input type="text" name="jumlahkriteria" value="{{ $jumlahkriteria }}" hidden>
                                     <input type="text" name="id" value="{{ $id }}" hidden>
 
                                 </tbody>

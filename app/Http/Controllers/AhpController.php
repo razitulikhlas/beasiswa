@@ -67,8 +67,9 @@ class AhpController extends Controller
             $nama[$key] = $value->nama_kriteria;
             $jumlaKriteria++;
         }
+        // return $jumlaKriteria;
         return view('layouts.ahp.pilihperbandingan', [
-            'n' => $jumlaKriteria,
+            'jumlahkriteria' => $jumlaKriteria,
             'nama' => $nama,
             'id' => $id
         ]);
@@ -78,21 +79,23 @@ class AhpController extends Controller
     {
         // return $request->all();
         $namaKriteria = $this->getKriteriaNama($no, $request['id']);
-        $max = $request['max'];
+        $jumlahkriteria = $request['jumlahkriteria'];
         $siswa = Siswa::all();
         $nama = array();
-        $jumlaKriteria = 0;
+        $jumlahalternatif = 0;
         foreach ($siswa as $key => $value) {
             $nama[$key] = $value->nama;
-            $jumlaKriteria++;
+            $jumlahalternatif++;
         }
 
+        // return $jumlahalternatif;
 
-        if($jumlaKriteria <= 2){
+        if($jumlahalternatif <= 2){
             return view('layouts.hasil.erorsatu');
         }
         return view('layouts.ahp.pilihperbandinganalternatif', [
-            'n' => $jumlaKriteria,
+            'n' => $jumlahalternatif,
+            'jumlahkriteria' => $jumlahkriteria,
             'nama' => $nama,
             'namaKriteria' => $namaKriteria,
             'id' => $request['id'],
@@ -102,17 +105,16 @@ class AhpController extends Controller
 
     public function matrikkriteria(Request $request)
     {
+        // return $request;
         $matrik = array();
         $urut     = 0;
-        $n = $request['n'];
+        $jumlaKriteria = $request['jumlahkriteria'];
         $kriteria = Kriteria::whereIdBeasiswa($request['id'])->get();
         $nama = array();
         foreach ($kriteria as $key => $value) {
             $nama[$key] = $value->nama_kriteria;
         }
-        $jenis = "kriteria";
-        // return $request['pilih1'];
-        // return $request->all();
+        $n = $jumlaKriteria;
 
         for ($x = 0; $x <= ($n - 2); $x++) {
             for ($y = ($x + 1); $y <= ($n - 1); $y++) {
@@ -192,6 +194,7 @@ class AhpController extends Controller
         return view('layouts.ahp.proseskriteria', [
             "nama" => $nama,
             "n" => $n,
+            "jumlahkriteria"=>$jumlaKriteria,
             "matrik" => $matrik,
             "matrikb" => $matrikb,
             "jmlmpb" => $jmlmpb,
@@ -200,7 +203,7 @@ class AhpController extends Controller
             "eigenvektor" => $eigenvektor,
             "consIndex" => $consIndex,
             "consRatio" => $consRatio,
-            "no" => 0,
+            "no" => 1,
             "id" => $request['id']
         ]);
     }
@@ -212,6 +215,7 @@ class AhpController extends Controller
         $matrik = array();
         $urut     = 0;
         $n = $request['n'];
+        $jumlahkriteria = $request['jumlahkriteria'];
         $siswa = Siswa::all();
         $nama = array();
         $jenis = $request['jenis'];
@@ -304,6 +308,7 @@ class AhpController extends Controller
             "consIndex" => $consIndex,
             "consRatio" => $consRatio,
             "no" => $jenis,
+            "jumlahkriteria" => $jumlahkriteria,
             "id" => $request["id"]
         ]);
 
@@ -631,200 +636,6 @@ class AhpController extends Controller
             $listID[] = $value->nama_kriteria;
         }
         return $listID[($no_urut - 1)];
-    }
-
-
-
-    public function bacukp($id)
-    {
-        $data = $this->getListSiswa($id);
-        // return $data;
-        $column = array();
-        $matrik = array();
-        $jumlahColumn = array();
-        $matriknilaikriteria = array();
-        $totalL = array();
-        $a = array();
-        $ci = array();
-        $ir = array();
-        $check = array();
-        // return $ir;
-        $cr =  array();
-        foreach ($data['datakey'] as $key => $datakey) {
-            $column[$key] = array_column($data['datasiswa'], $datakey);
-
-            for ($x = 0; $x <= (sizeof($column[$key]) - 2); $x++) {
-
-                for ($y = ($x + 1); $y <= (sizeof($column[$key]) - 1); $y++) {
-
-                    if ($column[$key][$x] > $column[$key][$y]) {
-                        $matrik[$key][$x][$y] = (float)round($column[$key][$x] / $column[$key][$y], 2);
-                        $matrik[$key][$y][$x] = (float)round($column[$key][$y] / $column[$key][$x], 2);
-                    } else {
-                        $matrik[$key][$x][$y] = (float)round($column[$key][$x] / $column[$key][$y], 2);
-                        $matrik[$key][$y][$x] = (float)round($column[$key][$y] / $column[$key][$x], 2);
-                    }
-                }
-
-                for ($i = 0; $i <= (sizeof($column[$key]) - 1); $i++) {
-                    $matrik[$key][$i][$i] = 1;
-                }
-            }
-
-            foreach ($matrik[$key] as $keycolumn => $value) {
-                // $column[$key] = array_column($matrik,$key);
-                $jumlahColumn[$key][$keycolumn] = round(array_sum(array_column($matrik[$key], $keycolumn)), 3);
-            }
-
-            foreach ($column[$key] as $n => $value) {
-                $i = 0;
-                $jumlah = 0;
-                foreach ($matrik[$key] as $x => $v) {
-                    $matriknilaikriteria[$key][$n][$x] = (float)round($matrik[$key][$n][$x] /  $jumlahColumn[$key][$x], 3);
-                    $matriknilaikriteria[$key][$n][$x] = (float)round($matrik[$key][$n][$x] /  $jumlahColumn[$key][$x], 3);
-                    $jumlah += $matriknilaikriteria[$key][$n][$x];
-                    $i++;
-                }
-                $a[$key] = $i;
-                $matriknilaikriteria[$key][$n][$i] = round($jumlah, 3);
-                $matriknilaikriteria[$key][$n][$i + 1] = round($jumlah / $i, 3);
-            }
-
-            // return $matriknilaikriteria;
-            $totalL[$key] = 0;
-            foreach ($jumlahColumn[$key] as $keyc => $value) {
-                $totalL[$key] += $value * $matriknilaikriteria[$key][$keyc][$a[$key] + 1];
-                $check[$key][$keyc] = "";
-                $check[$key][$keyc] = $check[$key][$keyc] . "" . $value . "*" . $matriknilaikriteria[$key][$keyc][$a[$key] + 1];
-            }
-
-
-            $ci[$key] = ($totalL[$key] - $a[$key]) / ($a[$key] - 1);
-            $ir[$key] = IR::whereJumlah($a[$key])->first();
-            // return $ir;
-            $cr[$key] =  $ci[$key] / $ir[$key]->nilai;
-        }
-        return [
-            "matrik" => $matriknilaikriteria,
-            "jumlah" => $jumlahColumn,
-            "total" => $totalL,
-            "check" => $check
-            // "cr"=>$cr,
-        ];
-        // return $check;
-        // return $totalL;
-        // return $column[0][0];
-        return [
-
-            "ci" => $ci,
-            "cr" => $cr,
-            "ir" => $ir
-            // "cr"=>$cr,
-        ];
-
-
-
-        // return $a;
-        return $totalL;
-
-        return $matriknilaikriteria;
-        return $jumlahColumn;
-        return $matrik;
-    }
-
-    public function kriteriafix($id)
-    {
-        $kriteria = Kriteria::whereIdBeasiswa($id)->whereIsActive(1)->get();
-        //   $kriteria = Kriteria::whereIdBeasiswa($id)->get();
-        $n = $kriteria->count();
-        //   return $n;
-        // return $kriteria;
-
-        $matrik = array();
-
-        for ($x = 0; $x <= ($n - 2); $x++) {
-            // 1; 1<=2; y++
-            for ($y = ($x + 1); $y <= ($n - 1); $y++) {
-                // $urut++;
-                // $pilih	= "pilih".$urut;
-                // $bobot 	= "bobot".$urut;
-                if ($kriteria[$x]['bobot'] > $kriteria[$y]['bobot']) {
-                    // matrik[0][2] = 5
-                    // matriks[2][0] = 1/5
-                    // matrik[1][2] = 2
-                    // matriks[2][2] = 1/2
-                    $matrik[$x][$y] = (float)round($kriteria[$x]['bobot'] / $kriteria[$y]['bobot'], 2);
-                    $matrik[$y][$x] = (float)round($kriteria[$y]['bobot'] / $kriteria[$x]['bobot'], 2);
-                } else {
-                    // matrik[0][1] = 5/10 = 0.5
-                    // matriks[1][0] = 10/5 = 2.0
-                    // matriks[0][2] = 5/8 = 0.625
-                    // matriks[2][0] = 8/5 = 1.6
-                    $matrik[$x][$y] = (float)round($kriteria[$x]['bobot'] / $kriteria[$y]['bobot'], 2);
-                    $matrik[$y][$x] = (float)round($kriteria[$y]['bobot'] / $kriteria[$x]['bobot'], 2);
-                }
-            }
-        }
-
-        // diagonal --> bernilai 1
-        for ($i = 0; $i <= ($n - 1); $i++) {
-            $matrik[$i][$i] = 1;
-        }
-
-        $jumlahColumn = array();
-        foreach ($matrik as $key => $value) {
-            // $column[$key] = array_column($matrik,$key);
-            $jumlahColumn[$key] = array_sum(array_column($matrik, $key));
-        }
-
-        $matriknilaikriteria = array();
-        foreach ($kriteria as $n => $value) {
-            $i = 0;
-            $jumlah = 0;
-            foreach ($matrik as $x => $v) {
-                $matriknilaikriteria[$n][$x] = (float)round($matrik[$n][$x] /  $jumlahColumn[$x], 3);
-                $jumlah += $matriknilaikriteria[$n][$x];
-                $i++;
-            }
-            $matriknilaikriteria[$n][$i] = $jumlah;
-            $matriknilaikriteria[$n][$i + 1] = round($jumlah / $i, 3);
-        }
-        // return $jumlahColumn;
-
-        $totalL = 0;
-        foreach ($jumlahColumn as $key => $value) {
-            $totalL += $value * $matriknilaikriteria[$key][$i + 1];
-        }
-        // return $totalL;
-        // return $i;
-        $ci = ($totalL - $i) / ($i - 1);
-        $ir = IR::whereJumlah($i)->first();
-        // return $ir;
-        $cr =  $ci / $ir->nilai;
-
-        // return [
-        //      "kriteria" => $kriteria,
-        //     "matrik" => $matrik,
-        //     "jumlahcolum" => $jumlahColumn,
-        //     "matriksnilaikriteria" => $matriknilaikriteria,
-        //     "i" => $i,
-        //     "lamda" => $totalL,
-        //     "cr" => $cr
-        // ];
-
-
-
-
-
-        return view('layouts.ahp.result', [
-            "kriteria" => $kriteria,
-            "matrik" => $matrik,
-            "jumlahcolum" => $jumlahColumn,
-            "matriksnilaikriteria" => $matriknilaikriteria,
-            "i" => $i,
-            "lamda" => $totalL,
-            "cr" => $cr
-        ]);
     }
 
     public function topsis($id)

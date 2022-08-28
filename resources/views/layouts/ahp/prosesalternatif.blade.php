@@ -109,8 +109,9 @@
                                 </a>
                             @else
                                 <br>
-
-                                @if ($n == $no)
+                                {{-- n {{ $jumlahkriteria }}
+                                no {{ $no }} --}}
+                                @if ($jumlahkriteria == $no)
                                     <form action="hasil" method="POST">
                                         @csrf
                                         <input type="text" name="id" value="{{ $id }}" hidden>
@@ -123,6 +124,7 @@
                                     <form action="alternatif/{{ $no + 1 }}" method="POST">
                                         @csrf
                                         <input type="text" name="id" value="{{ $id }}" hidden>
+                                        <input type="text" name="jumlahkriteria" value="{{ $jumlahkriteria }}" hidden>
                                         <button type="submit" class="btn btn-primary" style="float: right;">
                                             <i class="right arrow icon"></i>
                                             Lanjut
