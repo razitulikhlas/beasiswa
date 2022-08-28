@@ -90,22 +90,7 @@
                                             </td>
                                         </tr>
                                     @endforeach
-                                    {{-- @foreach ($data as $item)
-                                        <tr>
-                                            <td class="text-bold-500">{{ $loop->iteration }}</td>
-                                            <td class="text-bold-500">{{ $item['title'] }}</td>
-                                            <td class="text-bold-500">{{ $item['desc'] }}</td>
-                                            <td>
-                                                <button id="edit" type="button" data-id={{ $item['id'] }}
-                                                    data-title="{{ $item['title'] }}" data-desc={{ $item['desc'] }}
-                                                    class="btn btn-info rounded-pill" data-bs-toggle="modal"
-                                                    data-bs-target="#update">Edit</button>
-                                                <button type="button" class="btn btn-danger rounded-pill"
-                                                    data-bs-toggle="modal" data-id-beasiswa={{ $item['id'] }}
-                                                    data-bs-target="#exampleModalCenter" id="delete">Delete</button>
-                                            </td>
-                                        </tr>
-                                    @endforeach --}}
+
                                 </tbody>
                             </table>
                         </div>

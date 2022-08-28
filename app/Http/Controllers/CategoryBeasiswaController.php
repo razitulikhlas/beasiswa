@@ -88,6 +88,7 @@ class CategoryBeasiswaController extends Controller
     public function update(Request $request, $id)
     {
 
+
          $data = $request->only([
             'title',
             'desc'

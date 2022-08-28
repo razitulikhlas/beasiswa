@@ -16,9 +16,9 @@
         <div class="alert alert-danger">{{ session('errorbobot') }}</div>
     @endif
 
-    <div class="col col-lg-1 offset-lg-11">
-        <a href="/kategoribeasiswa" class="">Back</a>
-    </div>
+    {{-- <div class="col col-lg-1 offset-lg-11">
+
+    </div> --}}
     <div class="col-12 row">
         <div class="col-3">
             <div class="card">
@@ -66,11 +66,9 @@
                                 <div class="col-md-12 col-12">
                                     <div class="form-group">
                                         <label for="bobot">Bobot</label>
-                                        <input type="number" id="bobot"
+                                        <input type="number" step="0.01" id="bobot"
                                             class="form-control @if (session('errorbobot')) is-invalid @endif"
-                                            placeholder="nilai bobot" name="bobot" required
-                                            oninvalid="this.setCustomValidity('nilai bobot tidak boleh kosong')"
-                                            oninput="setCustomValidity('')" value="{{ old('bobot') }}">
+                                            placeholder="nilai bobot" name="bobot" value="{{ old('bobot') }}">
                                         {{-- <small class="text-muted">bobot yang tersedia {{ $bobot_available }}</small> --}}
                                     </div>
                                 </div>
@@ -78,6 +76,7 @@
                                     <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
                                     <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
                                 </div>
+                                <a href="/kategoribeasiswa" class="btn btn-secondary">Back</a>
                             </div>
                         </form>
 
@@ -262,8 +261,8 @@
                             <div class="col-md-12 col-12">
                                 <div class="form-group">
                                     <label for="bobot">Bobot</label>
-                                    <input type="number" id="Ubobot" class="form-control" placeholder="Kode prodi"
-                                        name="bobot" required
+                                    <input type="number" step="0.01" id="Ubobot" class="form-control"
+                                        placeholder="Kode prodi" name="bobot" required
                                         oninvalid="this.setCustomValidity('nilai bobot tidak boleh kosong')"
                                         oninput="setCustomValidity('')" value="{{ old('bobot') }}">
                                 </div>

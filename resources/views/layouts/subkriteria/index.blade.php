@@ -16,9 +16,7 @@
         <div class="alert alert-danger">{{ session('errorbobot') }}</div>
     @endif
 
-    {{-- <div class="col col-lg-1 offset-lg-11">
-        <a href="/kriteria" class="">Back</a>
-    </div> --}}
+
     <div class="col-12 row">
         <div class="col-3">
             <div class="card">
@@ -66,6 +64,7 @@
                                     <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
                                     <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
                                 </div>
+                                <a href="/kategoribeasiswa/{{ $id_beasiswa }}" class="btn btn-secondary">Back</a>
                             </div>
                         </form>
 
@@ -182,9 +181,7 @@
                                 </div>
                             </div>
                             <div class="col-md-12 col-12">
-                                <input type="text" id="id_kriteria" class="form-control" name="id_kriteria"
-                                    value="{{ $id_kriteria }}" readonly hidden>
-
+                                <input type="hidden" id="uid_kriteria" class="form-control" name="id_subkriteria">
                             </div>
                             <div class="col-md-12 col-12">
                                 <div class="form-group">
@@ -217,9 +214,12 @@
                 const sub_kriteria = $(this).data('sub-kriteria');
                 const value = $(this).data('value');
 
+                console.log(id);
+
 
                 $("#usub_kriteria").val(sub_kriteria);
                 $("#uvalue").val(value);
+                $("#uid_kriteria").val(id);
                 $('#formEdit').attr('action', '/kriteria/' + id);
             })
         });
