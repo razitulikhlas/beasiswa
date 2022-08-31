@@ -56,7 +56,7 @@
                                                     <select class="form-select" id="{{ str_replace(' ', '_', $item) }}"
                                                         name="{{ str_replace(' ', '_', $item) }}">
                                                         @foreach ($subkriteria[$item] as $itemsubkriteria)
-                                                            <option value="{{ $itemsubkriteria['value'] }}" selected>
+                                                            <option value="{{ $itemsubkriteria['value'] }}">
                                                                 {{ $itemsubkriteria['title'] }}</option>
                                                         @endforeach
                                                     </select>
@@ -164,7 +164,7 @@
                         <i class="bx bx-x d-block d-sm-none"></i>
                         <span class="d-none d-sm-block">Close</span>
                     </button>
-                    <form action="/prodi" method="post" class="d-inline" id="formDelete">
+                    <form action="/databeasiswa" method="post" class="d-inline" id="formDelete">
                         @method('delete')
                         @csrf
                         <button class="btn btn-primary ml-1">
@@ -216,10 +216,10 @@
                                         <label for="prodi">{{ $item }}</label>
                                         @if (sizeof($subkriteria[$item]) != 0)
                                             <fieldset class="form-group">
-                                                <select class="form-select" id="{{ str_replace(' ', '_', $item) }}"
+                                                <select class="form-select" id="u{{ str_replace(' ', '_', $item) }}"
                                                     name="u{{ str_replace(' ', '_', $item) }}">
                                                     @foreach ($subkriteria[$item] as $itemsubkriteria)
-                                                        <option value="{{ $itemsubkriteria['value'] }}" selected>
+                                                        <option value="{{ $itemsubkriteria['value'] }}">
                                                             {{ $itemsubkriteria['title'] }}</option>
                                                     @endforeach
                                                 </select>
@@ -258,6 +258,7 @@
     <script>
         $(function() {
             $(document).on('click', '#delete', function() {
+                console.log("HELLO" + $(this).data('id-prodi'));
                 $('#formDelete').attr('action', '/databeasiswa/' + $(this).data('id-prodi'))
             })
 
@@ -267,7 +268,7 @@
                 $('#uid_siswa').val(id_siswa);
                 @foreach ($datakey as $item)
                     const {{ $item }} = $(this).data('{{ $item }}');
-                    $("#u{{ $item }}").val({{ $item }});
+                    $("#u{{ $item }}").val({{ $item }}).change();
                 @endforeach
 
                 $('#formEdit').attr('action', '/databeasiswa/' + id);

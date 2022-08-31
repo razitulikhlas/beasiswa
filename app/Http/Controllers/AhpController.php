@@ -350,11 +350,9 @@ class AhpController extends Controller
                 // $checkdata[] = "".$pv_alternatif."*".$pv_kriteria;
             }
         }
-        // return $pv_alternatif;
 
-        // return $checkdata;
         $namaALternatif = Siswa::all();
-        // update nilai ranking
+
         for ($i = 0; $i <= ($jmlAlternatif - 1); $i++) {
             $id_alternatif = $this->getAlternatifID($i);
 
@@ -387,15 +385,8 @@ class AhpController extends Controller
             }
 
         }
-        // return $namaALternatif;
-
 
         $rangking = DB::select('SELECT tbl_siswa.id,tbl_siswa.nama,tbl_rangking.id_alternatif,tbl_rangking.nilai FROM tbl_siswa,tbl_rangking WHERE tbl_siswa.id = tbl_rangking.id_alternatif ORDER BY nilai DESC');
-
-        // return $rangking;
-
-        // return $namaALternatif;
-
 
         return view("layouts.ahp.rangking", [
             "namaAlternatif" => $namaALternatif,
@@ -409,15 +400,7 @@ class AhpController extends Controller
     // mencari priority vector kriteria
     function getKriteriaPV($id_kriteria)
     {
-        // include('config.php');
-
         $pv = PvKriteria::whereIdKriteria($id_kriteria)->first();
-        // $query = "SELECT nilai FROM pv_kriteria WHERE id_kriteria=$id_kriteria";
-        // $result = mysqli_query($koneksi, $query);
-        // while ($row = mysqli_fetch_array($result)) {
-        // 	$pv = $row['nilai'];
-        // }
-
         return $pv->nilai;
     }
     // mencari priority vector alternatif
@@ -426,20 +409,10 @@ class AhpController extends Controller
 
         $data = PvAlternatif::whereIdAlternatif($id_alternatif)->whereIdKriteria($id_kriteria)->get();
 
-        // return $data;
         $pv = 0;
         foreach ($data as $value) {
             $pv = $value->nilai;
         }
-        // if($pv == 0){
-        //     return [
-        //         "jika error","alter".$id_alternatif,"krite".$id_kriteria
-        //     ];
-        // }
-        // return[
-        //     $pv,"alter".$id_alternatif,"krite".$id_kriteria
-        // ];
-
         return $pv;
     }
 
@@ -483,16 +456,7 @@ class AhpController extends Controller
         $id_pembanding  = $this->getKriteriaID($pembanding, $id);
 
 
-
         $check = PerbandinganAlternatif::whereAlternatif1($id_alternatif1)->whereAlternatif2($id_alternatif2)->wherePembanding($id_pembanding)->get();
-        // return $check;
-        // $query  = "SELECT * FROM perbandingan_alternatif WHERE alternatif1 = $id_alternatif1 AND alternatif2 = $id_alternatif2 AND pembanding = $id_pembanding";
-        // $result = mysqli_query($koneksi, $query);
-
-        // if (!$result) {
-        //     echo "Error !!!";
-        //     exit();
-        // }
 
         // jika result kosong maka masukkan data baru
         // jika telah ada maka diupdate
@@ -503,12 +467,10 @@ class AhpController extends Controller
                 'alternatif2' => $id_alternatif2,
                 'pembanding' => $id_pembanding,
             ]);
-            // $query = "INSERT INTO perbandingan_alternatif (alternatif1,alternatif2,pembanding,nilai) VALUES ($id_alternatif1,$id_alternatif2,$id_pembanding,$nilai)";
         } else {
             PerbandinganAlternatif::whereAlternatif1($id_alternatif1)->whereAlternatif2($id_alternatif2)->wherePembanding($id_pembanding)->update([
                 "nilai" => $nilai
             ]);
-            // $query = "UPDATE perbandingan_alternatif SET nilai=$nilai WHERE alternatif1=$id_alternatif1 AND alternatif2=$id_alternatif2 AND pembanding=$id_pembanding";
         }
         return [
             'id_alternatif1' => $id_alternatif1,
@@ -516,11 +478,6 @@ class AhpController extends Controller
             'pembanding' => $id_pembanding,
         ];
 
-        // $result = mysqli_query($koneksi, $query);
-        // if (!$result) {
-        //     echo "Gagal memasukkan data perbandingan";
-        //     exit();
-        // }
     }
 
     // memasukkan nilai priority vektor kriteria
@@ -528,31 +485,13 @@ class AhpController extends Controller
     {
 
         $pvKriteria = PvKriteria::whereIdKriteria($id_kriteria)->get();
-
-        // $query = "SELECT * FROM pv_kriteria WHERE id_kriteria=$id_kriteria";
-        // $result = mysqli_query($koneksi, $query);
-
-        // if (!$result) {
-        // 	echo "Error !!!";
-        // 	exit();
-        // }
-
         // jika result kosong maka masukkan data baru
         // jika telah ada maka diupdate
         if (isset($pvKriteria)) {
             PvKriteria::create(['id_kriteria' => $id_kriteria, 'nilai' => $pv]);
-            // $query = "INSERT INTO pv_kriteria (id_kriteria, nilai) VALUES ($id_kriteria, $pv)";
         } else {
             PvKriteria::whereIdKriteria($id_kriteria)->update(['nilai' => $pv]);
-            // $query = "UPDATE pv_kriteria SET nilai=$pv WHERE id_kriteria=$id_kriteria";
         }
-
-
-        // $result = mysqli_query($koneksi, $query);
-        // if(!$result) {
-        // 	echo "Gagal memasukkan / update nilai priority vector kriteria";
-        // 	exit();
-        // }
 
     }
 
@@ -596,29 +535,14 @@ class AhpController extends Controller
 
         $check = PerbandinganKriteria::whereKriteria1($id_kriteria1)->whereKriteria2($id_kriteria2)->first();
 
-        // $query  = "SELECT * FROM perbandingan_kriteria WHERE kriteria1 = $id_kriteria1 AND kriteria2 = $id_kriteria2";
-        // $result = mysqli_query($koneksi, $query);
-
-        // if (!$result) {
-        // 	echo "Error !!!";
-        // 	exit();
-        // }
 
         // jika result kosong maka masukkan data baru
         // jika telah ada maka diupdate
         if (!$check) {
             PerbandinganKriteria::create(['kriteria1' => $id_kriteria1, 'kriteria2' => $id_kriteria2, 'nilai' => $nilai]);
-            // $query = "INSERT INTO perbandingan_kriteria (kriteria1,kriteria2,nilai) VALUES ($id_kriteria1,$id_kriteria2,$nilai)";
         } else {
             PerbandinganKriteria::whereKriteria1($id_kriteria1)->whereKriteria2($id_kriteria2)->update(['nilai' => $nilai]);
-            // $query = "UPDATE perbandingan_kriteria SET nilai=$nilai WHERE kriteria1=$id_kriteria1 AND kriteria2=$id_kriteria2";
         }
-
-        // $result = mysqli_query($koneksi, $query);
-        // if (!$result) {
-        // 	echo "Gagal memasukkan data perbandingan";
-        // 	exit();
-        // }
 
     }
 
@@ -641,166 +565,6 @@ class AhpController extends Controller
         return $listID[($no_urut - 1)];
     }
 
-    public function topsis($id)
-    {
-        $data = $this->getListSiswa($id);
-        $column = array();
-
-        // return $data;
-
-        if (sizeof($data['datasiswa']) > 0) {
-            foreach ($data['datakey'] as  $datakey) {
-                $column = array_column($data['datasiswa'], $datakey);
-                $dataColumn['div' . $datakey] = 0;
-                foreach ($column as $itemColumn) {
-                    $dataColumn['div' . $datakey] += pow($itemColumn, 2);
-                }
-                $dataColumn['div' . $datakey] = round(sqrt($dataColumn['div' . $datakey]), 7);
-            }
-            $data['first'] = $data['datasiswa'];
-
-            // normalisasi
-            foreach ($data['datasiswa'] as $key => $datasiswa) {
-                $data['normalisasi'][$key]['name'] = $datasiswa['name'];
-                $data['normalisasi'][$key]['nim'] = $datasiswa['nim'];
-                foreach ($data['datakey'] as $datakey) {
-                    $data['datasiswa'][$key][$datakey] = round($datasiswa[$datakey] / $dataColumn['div' . $datakey], 9);
-                    $data['normalisasi'][$key][$datakey] = round($datasiswa[$datakey] / $dataColumn['div' . $datakey], 9);
-                }
-            }
-
-            // bobot
-            foreach ($data['datasiswa'] as $key => $datasiswa) {
-                $data['bobot'][$key]['name'] = $datasiswa['name'];
-                $data['bobot'][$key]['nim'] = $datasiswa['nim'];
-                foreach ($data['datakey'] as $datakey) {
-                    foreach ($data['kriteria'] as $datakriteria) {
-                        if ($datakey == $datakriteria['nama_kriteria']) {
-                            $data['datasiswa'][$key][$datakey] = $data['datasiswa'][$key][$datakey] * $datakriteria['bobot'];
-                            $data['bobot'][$key][$datakey] = $data['normalisasi'][$key][$datakey] * $datakriteria['bobot'];
-                        }
-                    }
-                }
-            }
-
-            foreach ($data['kriteria'] as $kriteria) {
-                $column = array_column($data['bobot'], $kriteria['nama_kriteria']);
-                if (strtolower($kriteria['type']) == $this->BENEFIT) {
-                    $data['max'][$kriteria['nama_kriteria']] = max($column);
-                    $data['min'][$kriteria['nama_kriteria']] = min($column);
-                } else {
-                    $data['max'][$kriteria['nama_kriteria']] = min($column);
-                    $data['min'][$kriteria['nama_kriteria']] = max($column);
-                }
-            }
-
-            foreach ($data['bobot'] as $key => $dataBobot) {
-                $data['plusminus'][$key]['plus'] = 0;
-                $data['plusminus'][$key]['minus'] = 0;
-                $data['plusminus'][$key]['name'] = $dataBobot['name'];
-                $data['plusminus'][$key]['nim'] = $dataBobot['nim'];
-                foreach ($data['datakey'] as $datakey) {
-                    $data['plusminus'][$key]['plus'] += pow($dataBobot[$datakey] - $data['max'][$datakey], 2);
-                    $data['plusminus'][$key]['minus'] += pow($data['min'][$datakey] - $dataBobot[$datakey], 2);
-                }
-                $data['plusminus'][$key]['plus'] = sqrt($data['plusminus'][$key]['plus']);
-                $data['plusminus'][$key]['minus'] = sqrt($data['plusminus'][$key]['minus']);
-            }
-
-            foreach ($data['bobot'] as $key => $databobot) {
-                $data['finish'][$key]['name'] = $databobot['name'];
-                $data['finish'][$key]['nim'] = $databobot['nim'];
-                $data['finish'][$key]['value'] = $data['plusminus'][$key]['minus'] / ($data['plusminus'][$key]['minus'] + $data['plusminus'][$key]['plus']);
-            }
-
-            usort($data['finish'], function ($a, $b) {
-                if ($a['value'] == $b['value']) {
-                    return 0;
-                }
-                return ($a['value'] > $b['value']) ? -1 : 1;
-            });
-            return $data;
-        } else {
-            return [
-                'result' => [],
-                'normalisasi' => [],
-            ];
-        }
-    }
-    public function saw($id)
-    {
-        $data = $this->getListSiswa($id);
-        $column = array();
-        // return $data;
-        if (sizeof($data['datasiswa']) > 0) {
-            foreach ($data['datakey'] as  $datakey) {
-                $column = array_column($data['datasiswa'], $datakey);
-                foreach ($data['kriteria'] as $datakriteria) {
-                    if ($datakey == $datakriteria['nama_kriteria']) {
-                        if (strtolower($datakriteria['type']) == $this->BENEFIT) {
-                            $dataColumn['div' . $datakey] = max($column);
-                        } else {
-                            $dataColumn['div' . $datakey] = min($column);
-                        }
-                    }
-                }
-            }
-            // return $dataColumn;
-
-
-            foreach ($data['datasiswa'] as $key => $datasiswa) {
-                $data['normalisasi'][$key]['name'] = $datasiswa['name'];
-                $data['normalisasi'][$key]['nim'] = $datasiswa['nim'];
-                foreach ($data['datakey'] as $datakey) {
-                    foreach ($data['kriteria'] as $datakriteria) {
-                        if ($datakey == $datakriteria['nama_kriteria']) {
-                            if (strtolower($datakriteria['type']) == $this->BENEFIT) {
-                                $data['datasiswa'][$key][$datakey] = $datasiswa[$datakey] / $dataColumn['div' . $datakey];
-                                $data['normalisasi'][$key][$datakey] = $datasiswa[$datakey] / $dataColumn['div' . $datakey];
-                            } else {
-                                $data['datasiswa'][$key][$datakey] = $dataColumn['div' . $datakey] / $datasiswa[$datakey];
-                                $data['normalisasi'][$key][$datakey] = $dataColumn['div' . $datakey] / $datasiswa[$datakey];
-                            }
-                        }
-                    }
-                }
-            }
-
-            foreach ($data['datasiswa'] as $key => $datasiswa) {
-                foreach ($data['datakey'] as $datakey) {
-                    foreach ($data['kriteria'] as $datakriteria) {
-                        if ($datakey == $datakriteria['nama_kriteria']) {
-                            $data['datasiswa'][$key][$datakey] = $data['datasiswa'][$key][$datakey] * ($datakriteria['bobot'] / 100);
-                        }
-                    }
-                }
-            }
-
-            foreach ($data['datasiswa'] as $key => $datasiswa) {
-                $data['datasiswa'][$key]['saw'] = 0;
-                foreach ($data['datakey'] as $datakey) {
-                    $data['datasiswa'][$key]['saw'] += $data['datasiswa'][$key][$datakey];
-                }
-            }
-
-            usort($data['datasiswa'], function ($a, $b) {
-                if ($a['saw'] == $b['saw']) {
-                    return 0;
-                }
-                return ($a['saw'] > $b['saw']) ? -1 : 1;
-            });
-            return [
-                'result' => $data['datasiswa'],
-                'normalisasi' => $data['normalisasi'],
-            ];
-        } else {
-            return [
-                'result' => [],
-                'normalisasi' => [],
-            ];
-        }
-    }
-
 
 
     public function getListSiswa($id)
@@ -814,7 +578,7 @@ class AhpController extends Controller
         $listValue = array();
         $dataValueBeasiswa = array();
         foreach ($kriteriaBeasiswa  as $key => $item) {
-            $item->nama_kriteria = strtolower(str_replace(' ', '_', $item['nama_kriteria']));
+            $item->nama_kriteria = strtolower(str_replace([' ','/','\\','-','&','*','^','%','$'], '_', $item['nama_kriteria']));
             $keyData[$key] = $item->nama_kriteria;
             $kriteriaBeasiswa[$key]['bobot'] = $item->bobot / $totalBoot;
         }

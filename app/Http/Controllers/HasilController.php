@@ -246,7 +246,7 @@ class HasilController extends Controller
         $listValue = array();
         $dataValueBeasiswa = array();
         foreach ($kriteriaBeasiswa  as $key => $item) {
-            $item->nama_kriteria = strtolower(str_replace(' ', '_', $item['nama_kriteria']));
+            $item->nama_kriteria = strtolower(str_replace([' ','/','\\','-','&','*','^','%','$'], '_', $item['nama_kriteria']));
             $keyData[$key] = $item->nama_kriteria;
             $kriteriaBeasiswa[$key]['bobot'] = $item->bobot / $totalBoot;
         }

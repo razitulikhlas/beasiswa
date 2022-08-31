@@ -43,11 +43,15 @@ class DataBeasiswaController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request->all();
         $kriteria = Kriteria::whereIdBeasiswa($request['id_beasiswa'])->get()->toArray();
+        // return $kriteria;
         $kriteriaData = array();
         foreach ($kriteria as $item) {
-            $kriteriaData[strtolower(str_replace(' ', '_', $item['nama_kriteria']))] = $request[strtolower(str_replace(' ', '_', $item['nama_kriteria']))];
+            $kriteriaData[strtolower(str_replace([' ','/','\\','-','&','*','^','%','$'], '_', $item['nama_kriteria']))] = $request[strtolower(str_replace([' ','/','\\','-','&','*','^','%','$'], '_', $item['nama_kriteria']))];
         }
+
+        // return $kriteriaData;
 
         $data = [
             'id_siswa' => $request['id_siswa'],
@@ -68,6 +72,7 @@ class DataBeasiswaController extends Controller
     {
         $siswa = Siswa::all();
         $datasiswa = $this->getListSiswa($id);
+        // return $datasiswa;
         // return $datasiswa['subkriteria']['memiliki_ksp'];
         return view('layouts.beasiswadinamis.index', [
             'datakey' => $datasiswa['datakey'],
@@ -152,11 +157,13 @@ class DataBeasiswaController extends Controller
         $dataValueBeasiswa = array();
         // return var_dump($kriteriaBeasiswa);
         foreach ($kriteriaBeasiswa  as $key => $item) {
-            $item->nama_kriteria = strtolower(str_replace(' ', '_', $item->nama_kriteria));
+            $item->nama_kriteria = strtolower(str_replace([' ','/','\\','-','&','*','^','%','$'], '_', $item->nama_kriteria));
             $subkriteria = Subkriteria::whereIdKriteria($item->id)->get();
             $keyData[$key] = $item->nama_kriteria;
             $subkriterias[$item->nama_kriteria] = $subkriteria;
         }
+
+        // return $listData;
 
 
         foreach ($listData as $key => $item) {
@@ -201,7 +208,7 @@ class DataBeasiswaController extends Controller
         $kriteria = Kriteria::whereIdBeasiswa($request['id_beasiswa'])->get()->toArray();
         $kriteriaData = array();
         foreach ($kriteria as $item) {
-            $kriteriaData[strtolower(str_replace(' ', '_', $item['nama_kriteria']))] = $request[strtolower(str_replace(' ', '_', 'u' . $item['nama_kriteria']))];
+            $kriteriaData[strtolower(str_replace([' ','/','\\','-','&','*','^','%','$'], '_', $item['nama_kriteria']))] = $request[strtolower(str_replace([' ','/','\\','-','&','*','^','%','$'], '_', 'u' . $item['nama_kriteria']))];
         }
 
         $data = [
